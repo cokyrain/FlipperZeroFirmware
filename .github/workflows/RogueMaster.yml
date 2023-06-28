@@ -43,7 +43,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
-          ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper-Xtreme
+          ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/flipperzero-firmware-wPlugins
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
