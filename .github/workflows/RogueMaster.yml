@@ -59,7 +59,7 @@ jobs:
           ls
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
-          echo "FILE_TIME=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
+          echo "FILE_TIME=$(date "+%Y.%m.%d-%H:%M:%S")" >> $GITHUB_ENV
           echo "GIT_NAME=RogueMaster" >> $GITHUB_ENV
           
       - name: 检查磁盘使用情况
@@ -97,7 +97,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.GIT_NAME }}${{ env.FILE_TIME }}
+          name: ${{ env.FILE_TIME }} ${{ env.GIT_NAME }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
