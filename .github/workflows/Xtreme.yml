@@ -84,7 +84,7 @@ jobs:
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=【${{ env.GIT_NAME }}】${{ env.FILE_TIME }}" >>$GITHUB_OUTPUT 
+          echo "release_tag=${{ env.FILE_TIME }}【${{ env.GIT_NAME }}】" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >>$GITHUB_OUTPUT 
