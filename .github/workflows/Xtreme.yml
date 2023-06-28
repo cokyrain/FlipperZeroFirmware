@@ -69,6 +69,7 @@ jobs:
           cd /dist/f7-C
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=status::success"
+          
       - name: 上传固件目录
         uses: actions/upload-artifact@main
         if: steps.organize.outputs.status == 'success' && !cancelled()
@@ -82,7 +83,7 @@ jobs:
         run: |
           echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
           touch release.txt
-          echo "[固件源码]($REPO_URL)" >> release.txt
+          echo "[源码来源]($REPO_URL)" >> release.txt
           echo "::set-output name=status::success"
           
       - name: 上传固件到release
