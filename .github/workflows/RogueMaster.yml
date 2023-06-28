@@ -1,6 +1,6 @@
 # Build Flipper Zero Firmware using GitHub Actions
 
-name: Build Xtreme
+name: Build RogueMaster
 
 on:
   repository_dispatch:
