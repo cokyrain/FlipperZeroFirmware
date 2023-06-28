@@ -1,7 +1,6 @@
-Auto compile Firmware for Flipper Zero
 
-RogueMaster
-https://github.com/RogueMaster/flipperzero-firmware-wPlugins
+# Auto compile Firmware by Github Actions for Flipper Zero
 
-Xtreme
-https://github.com/ClaraCrazy/Flipper-Xtreme
+Thanks for <a href="https://github.com/RogueMaster/flipperzero-firmware-wPlugins">RogueMaster</a> and <a href="https://github.com/ClaraCrazy/Flipper-Xtreme">Xtreme</a>.
+
+It will renew everyday, no matter whether the source code changes, Enjoy it!
