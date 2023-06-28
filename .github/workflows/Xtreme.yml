@@ -56,6 +56,7 @@ jobs:
         id: compile
         run: |
           cd Flipper-Xtreme/
+          ls
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
@@ -70,6 +71,7 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
           cd Flipper-Xtreme/dist/f7-C/
+          ls
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >>$GITHUB_OUTPUT 
           
