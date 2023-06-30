@@ -5,3 +5,14 @@
 Thanks for <a href="https://github.com/RogueMaster/flipperzero-firmware-wPlugins">RogueMaster</a> and <a href="https://github.com/ClaraCrazy/Flipper-Xtreme">Xtreme</a>.
 
 It will renew everyday, no matter whether the source code changes, Enjoy it!
+
+----
+
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/cokyrain/FlipperZeroFirmware.svg)](https://starchart.cc/cokyrain/FlipperZeroFirmware)
+
+
+----
+
