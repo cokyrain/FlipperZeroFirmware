@@ -1,8 +1,18 @@
 # codecov
+
 name: app.codecov.io
 
 on:
   repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+  schedule:
+    - cron: 30 0 * * *
+
 jobs:
   build:
     runs-on: ubuntu-latest
