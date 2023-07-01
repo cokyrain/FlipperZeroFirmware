@@ -4,8 +4,6 @@ name: Build Xtreme
 
 on:
   repository_dispatch:
-  push:
-  pull_request:
   workflow_dispatch:
     inputs:
       ssh:
