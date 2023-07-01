@@ -45,7 +45,7 @@ jobs:
         run: |
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
           cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
-          sed -i '1!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
+          sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
 
       - name: 编译固件
         id: compile
@@ -66,7 +66,7 @@ jobs:
         run: |
           cd flipperzero-firmware-wPlugins/dist/f7-C/
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-          echo "status=success" >>$GITHUB_OUTPUT 
+          echo "status=success" >> $GITHUB_OUTPUT 
           
       - name: 上传固件目录
         uses: actions/upload-artifact@main
@@ -82,7 +82,7 @@ jobs:
           echo "release_tag=${{ env.FILE_TIME }}【$GIT_NAME】" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
-          echo "status=success" >>$GITHUB_OUTPUT 
+          echo "status=success" >> $GITHUB_OUTPUT 
           
       - name: 上传固件到release
         uses: softprops/action-gh-release@v1
