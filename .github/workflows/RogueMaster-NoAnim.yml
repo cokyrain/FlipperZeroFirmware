@@ -3,8 +3,6 @@ name: Build RogueMaster-NoAnim
 
 on:
   repository_dispatch:
-  push:
-  pull_request:
   workflow_dispatch:
   schedule:
     - cron: 30 0 * * *
