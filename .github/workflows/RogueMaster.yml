@@ -41,13 +41,6 @@ jobs:
           git clone --recursive $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/flipperzero-firmware-wPlugins
 
-      - name: SSH连接管理
-        uses: P3TERX/ssh2actions@v1.0.0
-        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-        env:
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          
       - name: 编译固件
         id: compile
         run: |
