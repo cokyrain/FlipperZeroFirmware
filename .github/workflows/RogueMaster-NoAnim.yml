@@ -47,6 +47,7 @@ jobs:
           #cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
           #sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
           touch flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
+          cat flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
 
       - name: 编译固件
         id: compile
