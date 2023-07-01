@@ -51,12 +51,16 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           
-      - name: 编译固件
-        id: compile
+      - name: 清理Anim
+        id: clean-anim
         run: |
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
           cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
-          sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt          
+          sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt   
+
+      - name: 编译固件
+        id: compile
+        run: |
           cd flipperzero-firmware-wPlugins/
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
