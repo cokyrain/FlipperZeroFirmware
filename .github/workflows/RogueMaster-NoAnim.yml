@@ -12,6 +12,7 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  GIT_NAME: RogueMaster-NoAnim
   
 permissions:
   contents: write
@@ -45,6 +46,7 @@ jobs:
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
           cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
           sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
+          ls flipperzero-firmware-wPlugins/assets/dolphin/external/
 
       - name: 编译固件
         id: compile
@@ -53,8 +55,7 @@ jobs:
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_TIME=$(date "+%Y.%m.%d-%H.%M")" >> $GITHUB_ENV
-          echo "GIT_NAME=RogueMaster-NoAnim" >> $GITHUB_ENV
-          
+         
       - name: 检查磁盘使用情况
         if: (!cancelled())
         run: df -hT
@@ -71,14 +72,14 @@ jobs:
         uses: actions/upload-artifact@main
         if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
-          name: Flipper_firmware${{ env.GIT_NAME }}${{ env.FILE_TIME }}
+          name: Flipper_firmware$GIT_NAME${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成release标签
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=${{ env.FILE_TIME }}【${{ env.GIT_NAME }}】" >>$GITHUB_OUTPUT 
+          echo "release_tag=${{ env.FILE_TIME }}【$GIT_NAME】" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >>$GITHUB_OUTPUT 
@@ -89,7 +90,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.FILE_TIME }}【${{ env.GIT_NAME }}】
+          name: ${{ env.FILE_TIME }}【$GIT_NAME】
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
