@@ -55,8 +55,8 @@ jobs:
           sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
           
           
-          sed -i 's/power_limit = 12/power_limit = 53/g' firmware/targets/f7/furi_hal/furi_hal_region.c
-          cat firmware/targets/f7/furi_hal/furi_hal_region.c
+          sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
+          cat flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
           
 
       - name: 编译固件
