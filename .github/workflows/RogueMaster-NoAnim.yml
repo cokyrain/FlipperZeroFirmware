@@ -50,7 +50,7 @@ jobs:
           sed -i 's/\"25%\"\,/\"25%\"\,\n\ \ \ \ \"30%\"\,\n\ \ \ \ \"35%\"\,\n\ \ \ \ \"40%\"\,\n\ \ \ \ \"45%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/\"50%\"\,/\"50%\"\,\n\ \ \ \ \"55%\"\,\n\ \ \ \ \"60%\"\,\n\ \ \ \ \"65%\"\,\n\ \ \ \ \"70%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/\"75%\"\,/\"75%\"\,\n\ \ \ \ \"80%\"\,\n\ \ \ \ \"85%\"\,\n\ \ \ \ \"90%\"\,\n\ \ \ \ \"95%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          cat flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          cat flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c | head -n 150
           
       - name: 增加power&清理Anim
         run: |
