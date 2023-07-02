@@ -62,7 +62,7 @@ jobs:
           sed -i '1,9!d' manifest.txt
           sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' manifest.txt
           cat manifest.txt
-          cd Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64
+          cd L1_Furippa1_128x64
           rm -rf `ls frame*.png | grep -v frame_0.png`
           ls 
           
@@ -72,7 +72,6 @@ jobs:
           sed -i '/^Active cycles/cActive cycles\: 0' meta.txt
           sed -i '/^Frame rate/cFrame rate\: 1'/meta.txt
           sed -i '/^Active cooldown/cActive cooldown\: 0' meta.txt
-          cat meta.txt
         
       - name: 编译固件
         id: compile
