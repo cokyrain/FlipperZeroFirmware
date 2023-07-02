@@ -47,7 +47,7 @@ jobs:
           cp flipperzero-firmware-wPlugins/assets/dolphin/external/Kuronons_RMCFW_128x64/frame_0.png flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           sed -i '/^Passive frames/cPassive frames\: 1' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i '/^Frame rate/cFrame rate\: 1' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
-          sed -i '/^Frames order/cFrames order\: 1' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
+          sed -i '/^Frames order/cFrames order\: 0' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           cat flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
