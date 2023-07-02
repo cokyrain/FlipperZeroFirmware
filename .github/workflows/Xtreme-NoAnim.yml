@@ -70,7 +70,7 @@ jobs:
           sed -i '/^Passive frames/cPassive frames\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Frame rate/cFrame rate\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Frames order/cFrames order\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          
+          cat Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
         
       - name: 编译固件
         id: compile
