@@ -40,7 +40,7 @@ jobs:
           git clone --recursive $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/flipperzero-firmware-wPlugins
 
-      - name: 清理Anim
+      - name: 清理Anim&增加power
         id: clean-anim
         run: |
           rm flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
@@ -48,13 +48,11 @@ jobs:
           sed -i 's/Passive frames\: 5/Passive frames\: 1/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i 's/Frame rate\: 2/Frame rate\: 1/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i 's/Frames order\: 0 1 2 3 4/Frames order\: 0/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
-          cat flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
           cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
           sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
-          
-          
+
           sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
           cat flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
           
