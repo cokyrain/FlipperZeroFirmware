@@ -57,6 +57,7 @@ jobs:
         run: |
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           cat Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
+          rm -rf Flipper-Xtreme/assets/dolphin/custom
         
       - name: 编译固件
         id: compile
