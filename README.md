@@ -1,6 +1,8 @@
 
 # Auto Compile Firmware for Flipper Zero
-<img src="https://raw.githubusercontent.com/hampusborgos/country-flags/ba2cf4101bf029d2ada26da2f95121de74581a4d/svg/cn.svg" height="300" width="450">
+<img src="https://raw.githubusercontent.com/hampusborgos/country-flags/ba2cf4101bf029d2ada26da2f95121de74581a4d/svg/cn.svg" height="100" width="150">
+
+
 Thanks for：<br>
 
 <a href="https://github.com/RogueMaster/flipperzero-firmware-wPlugins">RogueMaster</a>  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml)
