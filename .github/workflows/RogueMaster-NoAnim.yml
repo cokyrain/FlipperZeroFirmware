@@ -43,7 +43,7 @@ jobs:
       - name: 清理Anim
         id: clean-anim
         run: |
-          rm -rf flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
+          rm flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
           cp flipperzero-firmware-wPlugins/assets/dolphin/external/Kuronons_RMCFW_128x64/frame_0.png flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           sed -i 's/Passive frames\: 5/Passive frames\: 0/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i 's/Frame rate: \2/Frame rate\: 0/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
