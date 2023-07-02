@@ -49,8 +49,9 @@ jobs:
           sed -i 's/\"0%\"\,/\"0%\"\,\"5%\"\,\"10%\"\,\"15%\"\,\"20%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/\"25%\"\,/\"25%\"\,\"30%\"\,\"35%\"\,\"40%\"\,\"45%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/\"50%\"\,/\"50%\"\,\"55%\"\,\"60%\"\,\"65%\"\,\"70%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/\"75%\"\,/\"75%\"\,\"80%\"\,\"85%\"\,\"90%\"\,\"95%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c          cat flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c | head -n 150
-          
+          sed -i 's/\"75%\"\,/\"75%\"\,\"80%\"\,\"85%\"\,\"90%\"\,\"95%\"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          cat flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+
       - name: 增加power&清理Anim
         run: |
           sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
