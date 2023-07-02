@@ -55,11 +55,11 @@ jobs:
       - name: 清理Anim&增加power
         id: clean-anim
         run: |
+          shopt -s extglob
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
    
           sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
-          
           sed -i '/^Passive frames/cPassive frames\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Active frames/cActive frames\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Frames order/cFrames order\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
