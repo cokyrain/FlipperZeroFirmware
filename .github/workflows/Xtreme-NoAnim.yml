@@ -58,9 +58,9 @@ jobs:
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           cat Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           
-          rm -rf `ls Flipper-Xtreme/assets/dolphin/external/L* | grep -v L1_Furippa1_128x64`
+          rm -rf `ls Flipper-Xtreme/assets/dolphin/external/L* | grep -v Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64`
           ls Flipper-Xtreme/assets/dolphin/external/
-          sed -i '1,9d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
+          sed -i '/^[0-9]/d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           cat Flipper-Xtreme/assets/dolphin/external/manifest.txt
           
