@@ -60,18 +60,20 @@ jobs:
           sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           
-          sed -i '/^Passive frames/c Passive frames\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          sed -i '/^Active frames/c Active frames\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
+          sed -i '/^Passive frames/cPassive frames\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
+          sed -i '/^Active frames/cActive frames\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Frames order/cFrames order\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Active cycles/cActive cycles\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Frame rate/cFrame rate\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           sed -i '/^Active cooldown/cActive cooldown\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          cat Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
           
-          #rm -rf Flipper-Xtreme/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
-          ls Flipper-Xtreme/assets/dolphin/external/            
-          #rm -rf Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/!("meta.txt"|"frame_0.png")
-          ls Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/      
+          cd Flipper-Xtreme/assets/dolphin/external/
+          rm -rf !("L1_Furippa1_128x64"|"manifest.txt")
+          ls
+          cd L1_Furippa1_128x64
+          rm -rf !("meta.txt"|"frame_0.png")
+          ls
+     
   
           
       - name: 编译固件
