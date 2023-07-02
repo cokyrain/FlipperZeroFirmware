@@ -44,7 +44,7 @@ jobs:
         run: |
           sed -i 's/0.0f/0.0f\,0.05f\,0.1f\,0.15f\,0.2f/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/0.25f/0.25f\,0.3f\,0.35f\,0.4f\,0.45f/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/0.5f/0.5f\,0.55f\,0.6f\,0.65f\,0.7f,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/0.5f/0.5f\,0.55f\,0.6f\,0.65f\,0.7f/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/0.75f/0.75f\,0.8f\,0.85f\,0.9f\,0.95f/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/\"0%\"/\"0%\"\,\"5%\"\,\"10%\"\,\"15%\"\,\"20%\"/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           sed -i 's/\"25%\"/\"25%\"\,\"30%\"\,\"35%\"\,\"40%\"\,\"45%\"/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
