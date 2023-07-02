@@ -42,14 +42,14 @@ jobs:
 
       - name: LCD设置精细化
         run: |
-          sed -i 's/"0%",/"0%",\n\ \ \ \ "5%",\n\ \ \ \ "10%",\n\ \ \ \ "15%",\n\ \ \ \ "20%",/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/"25%",/"25%",\n\ \ \ \ "30%",\n\ \ \ \ "35%",\n\ \ \ \ "40%",\n\ \ \ \ "45%",/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/"50%",/"50%",\n\ \ \ \ "55%",\n\ \ \ \ "60%",\n\ \ \ \ "65%",\n\ \ \ \ "70%",/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/"75%",/"75%",\n\ \ \ \ "80%",\n\ \ \ \ "85%",\n\ \ \ \ "90%",\n\ \ \ \ "95%",/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/0.0f,/0.0f,\n\ \ \ \ 0.05f,\n\ \ \ \ 0.1f,\n\ \ \ \ 0.15f,/g,\n\ \ \ \ 0.2f,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/0.25f,/0.25f,\n\ \ \ \ 0.3f,\n\ \ \ \ 0.35f,\n\ \ \ \ 0.4f,/g,\n\ \ \ \ 0.45f,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/0.5f,/0.5f,\n\ \ \ \ 0.55f,\n\ \ \ \ 0.6f,\n\ \ \ \ 0.65f,/g,\n\ \ \ \ 0.7f,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
-          sed -i 's/0.75f,/0.75f,\n\ \ \ \ 0.8f,\n\ \ \ \ 0.85f,\n\ \ \ \ 0.9f,/g,\n\ \ \ \ 0.95f,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/"0%"\,/"0%"\,\n\ \ \ \ "5%"\,\n\ \ \ \ "10%"\,\n\ \ \ \ "15%"\,\n\ \ \ \ "20%"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/"25%"\,/"25%"\,\n\ \ \ \ "30%"\,\n\ \ \ \ "35%"\,\n\ \ \ \ "40%"\,\n\ \ \ \ "45%"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/"50%"\,/"50%"\,\n\ \ \ \ "55%"\,\n\ \ \ \ "60%"\,\n\ \ \ \ "65%"\,\n\ \ \ \ "70%"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/"75%"\,/"75%"\,\n\ \ \ \ "80%"\,\n\ \ \ \ "85%"\,\n\ \ \ \ "90%"\,\n\ \ \ \ "95%"\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/0.0f\,/0.0f\,\n\ \ \ \ 0.05f\,\n\ \ \ \ 0.1f\,\n\ \ \ \ 0.15f\,/g\,\n\ \ \ \ 0.2f\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/0.25f\,/0.25f\,\n\ \ \ \ 0.3f\,\n\ \ \ \ 0.35f\,\n\ \ \ \ 0.4f\,/g\,\n\ \ \ \ 0.45f\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/0.5f\,/0.5f\,\n\ \ \ \ 0.55f\,\n\ \ \ \ 0.6f\,\n\ \ \ \ 0.65f\,/g\,\n\ \ \ \ 0.7f\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
+          sed -i 's/0.75f\,/0.75f\,\n\ \ \ \ 0.8f\,\n\ \ \ \ 0.85f\,\n\ \ \ \ 0.9f\,/g\,\n\ \ \ \ 0.95f\,/g' flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           cat flipperzero-firmware-wPlugins/applications/settings/notification_settings/notification_settings_app.c
           
       - name: 增加power&清理Anim
