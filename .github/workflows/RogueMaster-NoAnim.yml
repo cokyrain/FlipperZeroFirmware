@@ -48,11 +48,12 @@ jobs:
           sed -i 's/Passive frames\: 5/Passive frames\: 0/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i 's/Frame rate: \2/Frame rate\: 0/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i 's/Passive frames\: 5/Passive frames\: 0/g' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
+          cat flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
           cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
           sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
-          cat flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
+          
           
           sed -i 's/power_limit = 12/power_limit = 53/g' firmware/targets/f7/furi_hal/furi_hal_region.c
           cat firmware/targets/f7/furi_hal/furi_hal_region.c
