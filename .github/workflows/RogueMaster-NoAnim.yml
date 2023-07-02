@@ -45,9 +45,7 @@ jobs:
         run: |
           rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
           cp flipperzero-firmware-wPlugins/assets/dolphin/internal/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
-          sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt
-          rm -rf flipperzero-firmware-wPlugins/assets/dolphin/internal/*
-          cp flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/internal/
+          sed -i '1,2!d' flipperzero-firmware-wPlugins/assets/dolphin/external/manifest.txt        
 
       - name: 编译固件
         id: compile
