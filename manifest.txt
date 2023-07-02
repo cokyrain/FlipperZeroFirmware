@@ -1,14 +1,2 @@
-Filetype: Flipper Animation
+Filetype: Flipper Animation Manifest
 Version: 1
-
-Width: 128
-Height: 64
-Passive frames: 0
-Active frames: 0
-Frames order: 0 
-Active cycles: 0
-Frame rate: 0
-Duration: 3600
-Active cooldown: 0
-
-Bubble slots: 0
