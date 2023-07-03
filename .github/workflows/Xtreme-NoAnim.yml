@@ -37,7 +37,6 @@ jobs:
         run: |
           sudo timedatectl set-timezone "$TZ"
           sudo apt install rename
-          shopt -s extglob
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
@@ -48,6 +47,7 @@ jobs:
           df -hT $PWD
           git clone --recursive $REPO_URL
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper-Xtreme
+          shopt -s extglob
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
