@@ -59,7 +59,6 @@ jobs:
       - name: 清理Anim&增加power
         id: clean-anim
         run: |
-          
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           sed -i '1,2!d' Flipper-Xtreme/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
@@ -108,7 +107,7 @@ jobs:
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=${{ env.FILE_TIME }}_$GIT_NAME" >>$GITHUB_OUTPUT 
+          echo "release_tag=${{ env.FILE_TIME }}_${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >>$GITHUB_OUTPUT 
