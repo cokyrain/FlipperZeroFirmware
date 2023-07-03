@@ -37,10 +37,9 @@ jobs:
         run: |
           sudo timedatectl set-timezone "$TZ"
           sudo apt install rename
-          shopt -s extglob
-          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
+          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           
       - name: 下载固件源码
         working-directory: /workdir
@@ -56,6 +55,12 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           
+      - name: 增加power
+        id: clean-anim
+        run: |
+          shopt -s extglob
+          sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
+
       - name: 编译固件
         id: compile
         run: |
