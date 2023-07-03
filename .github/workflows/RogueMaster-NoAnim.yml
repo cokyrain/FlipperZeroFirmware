@@ -31,10 +31,9 @@ jobs:
         run: |
           sudo timedatectl set-timezone "$TZ"
           sudo apt install rename
-          shopt -s extglob
-          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
+          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           
       - name: 下载固件源码
         working-directory: /workdir
@@ -55,6 +54,7 @@ jobs:
           
       - name: 清理Anim
         run: |
+          shopt -s extglob
           sed -i '/^Passive frames/cPassive frames\: 1' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i '/^Frame rate/cFrame rate\: 1' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
           sed -i '/^Frames order/cFrames order\: 0' flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/meta.txt
