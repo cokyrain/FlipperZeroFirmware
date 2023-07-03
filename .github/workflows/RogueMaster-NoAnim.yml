@@ -109,7 +109,7 @@ jobs:
           name: ${{ env.FILE_TIME }}_${{ env.GIT_NAME }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*
+          files: ${{ env.FIRMWARE }}/*.tgz
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
