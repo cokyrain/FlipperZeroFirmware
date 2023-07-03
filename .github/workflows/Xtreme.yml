@@ -18,6 +18,7 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  GIT_NAME: Xtreme
   
 permissions:
   contents: write
@@ -35,6 +36,9 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo timedatectl set-timezone "$TZ"
+          sudo apt install rename
+          shopt -s extglob
+          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
           
@@ -77,14 +81,14 @@ jobs:
         uses: actions/upload-artifact@main
         if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
-          name: Flipper_firmware${{ env.GIT_NAME }}${{ env.FILE_TIME }}
+          name: Flipper_firmware$GIT_NAME${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成release标签
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=${{ env.FILE_TIME }}_${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
+          echo "release_tag=${{ env.FILE_TIME }}_$GIT_NAME" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >>$GITHUB_OUTPUT 
@@ -95,10 +99,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.FILE_TIME }}_${{ env.GIT_NAME }}
+          name: ${{ env.FILE_TIME }}_$GIT_NAME
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*
+          files: ${{ env.FIRMWARE }}/*.tgz
 
       - name: Delete workflow runs
         uses: GitRML/delete-workflow-runs@main
