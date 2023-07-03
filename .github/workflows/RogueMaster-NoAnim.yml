@@ -70,7 +70,7 @@ jobs:
           echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
-         
+
       - name: 检查磁盘使用情况
         if: (!cancelled())
         run: df -hT
@@ -80,7 +80,7 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
           cd flipperzero-firmware-wPlugins/dist/f7-C/
-          rename -v 's/flipper-z-f7/Flipper-RogueMaster-NoAnim-${{ env.FILE_TIME }}/' *.*
+          rename -v 's/flipper-z-f7/Flipper-$GIT_NAME-${{ env.FILE_TIME }}/' *.*
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT 
           
@@ -106,7 +106,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.FILE_TIME }}_${{ env.GIT_NAME }}
+          name: ${{ env.FILE_TIME }}_$GIT_NAME
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.tgz
@@ -125,7 +125,7 @@ jobs:
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
