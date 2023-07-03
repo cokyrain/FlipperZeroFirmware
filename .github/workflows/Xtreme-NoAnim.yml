@@ -107,7 +107,7 @@ jobs:
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo "release_tag=${{ env.FILE_TIME }}_${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
+          echo "release_tag=${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >>$GITHUB_OUTPUT 
@@ -137,8 +137,3 @@ jobs:
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
