@@ -37,9 +37,9 @@ jobs:
         run: |
           sudo timedatectl set-timezone "$TZ"
           sudo apt install rename
-          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
+          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           
       - name: 下载固件源码
         working-directory: /workdir
@@ -47,7 +47,6 @@ jobs:
           df -hT $PWD
           git clone --recursive $REPO_URL
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper-Xtreme
-          shopt -s extglob
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
@@ -59,6 +58,7 @@ jobs:
       - name: 清理Anim&增加power
         id: clean-anim
         run: |
+          shopt -s extglob
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           sed -i '1,2!d' Flipper-Xtreme/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
