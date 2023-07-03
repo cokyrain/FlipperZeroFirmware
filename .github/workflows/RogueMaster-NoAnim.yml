@@ -81,7 +81,7 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
           cd flipperzero-firmware-wPlugins/dist/f7-C/
-          rename -v 's/flipper-z-f7/Flipper-$GIT_NAME-${{ env.FILE_TIME }}/' *.*
+          rename -v 's/flipper-z-f7/Flipper-${{ env.$GIT_NAME }}-${{ env.FILE_TIME }}/' *.*
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT 
           
