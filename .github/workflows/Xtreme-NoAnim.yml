@@ -53,26 +53,26 @@ jobs:
         env:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+      - name: 增加power
+        id: add-power
+        run: |
+          sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           
       - name: 清理Anim&增加power
         id: clean-anim
         run: |
           shopt -s extglob
-          sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
-          sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           sed -i '1,2!d' Flipper-Xtreme/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
-          sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
-          sed -i '/^Passive frames/cPassive frames\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          sed -i '/^Active frames/cActive frames\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          sed -i '/^Frames order/cFrames order\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          sed -i '/^Active cycles/cActive cycles\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          sed -i '/^Frame rate/cFrame rate\: 1' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
-          sed -i '/^Active cooldown/cActive cooldown\: 0' Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/meta.txt
+
           rm -rf Flipper-Xtreme/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
-          ls Flipper-Xtreme/assets/dolphin/external/
-          rm -rf Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/!("meta.txt"|"frame_0.png")
-          ls Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/  
+          sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
+          sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
           
+          rm -rf Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/*
+          cp ./files/meta.txt Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/
+          cp ./files/frame_0.png Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/
+    
       - name: 编译固件
         id: compile
         run: |
