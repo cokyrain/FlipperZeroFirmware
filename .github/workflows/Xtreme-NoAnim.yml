@@ -54,12 +54,14 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-      - name: 增加power
+      - name: 增加power&默认配置
         id: add-power
         run: |
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/applications/main/subghz/views/subghz_frequency_analyzer.c
           
-      - name: 清理Anim&增加power
+      - name: 清理Anim
         id: clean-anim
         run: |
           shopt -s extglob
