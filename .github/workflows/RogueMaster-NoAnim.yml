@@ -48,10 +48,10 @@ jobs:
           sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/extend_range.txt
           sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
-          sed -i 's/Hopper_frequency: 390000000/Hopper_frequency: 430000000/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
-          sed -i 's/Hopper_frequency: 434420000/Hopper_frequency: 431500000/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
-          sed -i 's/431500000/431500000,432800000/g' flipperzero-firmware-wPlugins/lib/subghz/subghz_setting.c
-          sed -i 's/431500000/431500000,432800000/g' flipperzero-firmware-wPlugins/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/Hopper_frequency: 390000000/Hopper_frequency: 390000000\nHopper_frequency: 430000000/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
+          sed -i 's/Hopper_frequency: 434420000/Hopper_frequency: 430500000\nHopper_frequency: 431500000/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
+          sed -i 's/431500000/430500000,431500000,432800000/g' flipperzero-firmware-wPlugins/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/430500000,431500000,432800000/g' flipperzero-firmware-wPlugins/applications/main/subghz/views/subghz_frequency_analyzer.c
           
       - name: 清理Anim
         id: clean-anim
