@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@main
         if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
-          name: Flipper_firmware$GIT_NAME${{ env.FILE_TIME }}
+          name: ${{ $GIT_NAMEE }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成release标签
