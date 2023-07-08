@@ -45,7 +45,7 @@ jobs:
       - name: 增加power&默认配置
         id: add-power
         run: |
-          sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
+          sed -i 's/power_limit = 12/power_limit = 20/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/extend_range.txt
           sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
           sed -i 's/Hopper_frequency: 390000000/Hopper_frequency: 390000000\nHopper_frequency: 430000000/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/setting_user.txt
