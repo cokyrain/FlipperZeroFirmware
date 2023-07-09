@@ -16,3 +16,5 @@ Daily update Firmware, no matter whether the source code changes, Enjoy it!
 [![Stargazers](https://starchart.cc/cokyrain/FlipperZeroFirmware.svg)](https://starchart.cc/cokyrain/FlipperZeroFirmware)
 ----
 
+For more collective :
+<a href="https://github.com/UberGuidoZ/Flipper-IRDB">IRDB</a> 
