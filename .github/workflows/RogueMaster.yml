@@ -43,7 +43,6 @@ jobs:
 
       - name: 增加power&默认配置
         run: |
-          shopt -s extglob
           sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/extend_range.txt
           cp ./files/setting_user.txt flipperzero-firmware-wPlugins/assets/resources/subghz/assets/
