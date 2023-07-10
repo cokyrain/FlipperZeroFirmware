@@ -56,7 +56,6 @@ jobs:
       - name: 增加power&默认配置
         id: clean-anim
         run: |
-          shopt -s extglob
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/430000000/430000000,430500000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
           sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
