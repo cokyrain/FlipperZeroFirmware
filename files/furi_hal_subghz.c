@@ -30,6 +30,37 @@ static uint32_t furi_hal_subghz_debug_gpio_buff[2];
 #define SUBGHZ_DMA_CH1_DEF SUBGHZ_DMA, SUBGHZ_DMA_CH1_CHANNEL
 #define SUBGHZ_DMA_CH2_DEF SUBGHZ_DMA, SUBGHZ_DMA_CH2_CHANNEL
 
+/** SubGhz state */
+typedef enum {
+    SubGhzStateInit, /**< Init pending */
+
+    SubGhzStateIdle, /**< Idle, energy save mode */
+
+    SubGhzStateAsyncRx, /**< Async RX started */
+
+    SubGhzStateAsyncTx, /**< Async TX started, DMA and timer is on */
+    SubGhzStateAsyncTxLast, /**< Async TX continue, DMA completed and timer got last value to go */
+    SubGhzStateAsyncTxEnd, /**< Async TX complete, cleanup needed */
+
+} SubGhzState;
+
+/** SubGhz regulation, receive transmission on the current frequency for the
+ * region */
+typedef enum {
+    SubGhzRegulationOnlyRx, /**only Rx*/
+    SubGhzRegulationTxRx, /**TxRx*/
+} SubGhzRegulation;
+
+typedef struct {
+    volatile SubGhzState state;
+    volatile SubGhzRegulation regulation;
+    const GpioPin* async_mirror_pin;
+
+    uint8_t rolling_counter_mult;
+    bool timestamp_file_names : 1;
+    bool dangerous_frequency_i : 1;
+} FuriHalSubGhz;
+
 volatile FuriHalSubGhz furi_hal_subghz = {
     .state = SubGhzStateInit,
     .regulation = SubGhzRegulationTxRx,
