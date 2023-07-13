@@ -16,6 +16,7 @@ env:
   REPO_URL: https://github.com/ClaraCrazy/Flipper-Xtreme
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
+  NoAnim: true
   TZ: Asia/Shanghai
   GIT_NAME: Xtreme-NoAnim
   
@@ -63,6 +64,7 @@ jobs:
           sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/applications/main/subghz/views/subghz_frequency_analyzer.c
           
       - name: 清理Anim
+        if: env.NoAnim == 'true' && !cancelled()
         id: clean-anim
         run: |
           shopt -s extglob
@@ -95,8 +97,10 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
           cd Flipper-Xtreme/dist/f7-C/
-          rename -v 's/flipper-z-f7-update/Flipper-${{ env.GIT_NAME }}-${{ env.FILE_TIME }}/' *.*
-          rename -v 's/_\d+//' *.*
+          rm -rf *.tgz
+          ls
+          mv f7-update-XFW_* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
+          tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >>$GITHUB_OUTPUT 
           
