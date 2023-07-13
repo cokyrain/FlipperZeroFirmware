@@ -16,6 +16,7 @@ env:
   REPO_URL: https://github.com/ClaraCrazy/Flipper-Xtreme
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
+  NoAnim: false
   TZ: Asia/Shanghai
   GIT_NAME: Xtreme
   
@@ -52,16 +53,31 @@ jobs:
         env:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          
+
       - name: 增加power&默认配置
-        id: clean-anim
+        id: add-power
         run: |
           sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/430000000/430000000,430500000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
           sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper-Xtreme/applications/main/subghz/views/subghz_frequency_analyzer.c
           sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/applications/main/subghz/views/subghz_frequency_analyzer.c
+          
+      - name: 清理Anim
+        if: env.NoAnim == 'true' && !cancelled()
+        id: clean-anim
+        run: |
+          shopt -s extglob
+          sed -i '1,2!d' Flipper-Xtreme/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
 
+          rm -rf Flipper-Xtreme/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
+          sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
+          sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
+          
+          rm -rf Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/*
+          cp ./files/meta.txt Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/
+          cp ./files/frame_0.png Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/
+    
       - name: 编译固件
         id: compile
         run: |
@@ -81,8 +97,9 @@ jobs:
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
           cd Flipper-Xtreme/dist/f7-C/
-          rename -v 's/flipper-z-f7-update/Flipper-${{ env.GIT_NAME }}-${{ env.FILE_TIME }}/' *.*
-          rename -v 's/_\d+//' *.*
+          rm -rf *.tgz
+          mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
+          tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >>$GITHUB_OUTPUT 
           
