@@ -7,6 +7,8 @@ Thanks to：<br>
 
 <a href="https://github.com/RogueMaster/flipperzero-firmware-wPlugins">RogueMaster</a>  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml)
 
+<a href="https://github.com/DarkFlippers/unleashed-firmware">Unleashed</a>  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Unleashed.yml)
+
 <a href="https://github.com/ClaraCrazy/Flipper-Xtreme">Xtreme</a>  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Xtreme.yml)
 
 Daily update Firmware, no matter whether the source code changes, Enjoy it!
