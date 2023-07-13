@@ -11,6 +11,7 @@ env:
   REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
+  NoAnim: true
   TZ: Asia/Shanghai
   GIT_NAME: RogueMaster-NoAnim
   
@@ -54,6 +55,7 @@ jobs:
           
       - name: 清理Anim
         id: clean-anim
+        if: env.NoAnim == 'true' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
