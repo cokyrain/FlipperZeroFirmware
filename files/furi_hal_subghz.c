@@ -1,5 +1,5 @@
 #include <furi_hal_subghz.h>
-#include <furi_hal_subghz_configs.h>
+
 #include <lib/subghz/devices/cc1101_configs.h>
 
 #include <furi_hal_region.h>
@@ -12,7 +12,7 @@
 
 #include <stm32wbxx_ll_dma.h>
 
-#include <lib/flipper_format/flipper_format.h>
+
 
 #include <furi.h>
 #include <cc1101.h>
