@@ -41,11 +41,10 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
           
       - name: 下载固件源码
-        working-directory: /workdir
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
-          ln -sf /workdir/Flipper $GITHUB_WORKSPACE/Flipper
+          ln -sf /unleashed-firmware $GITHUB_WORKSPACE/Flipper
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
