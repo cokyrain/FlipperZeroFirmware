@@ -84,7 +84,7 @@ jobs:
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
-          cd Flipper/dist/f7-C/
+          cd Flipper/dist/f7-D/
           rm -rf *.tgz
           mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
