@@ -85,9 +85,7 @@ jobs:
           cd flipperzero-firmware-wPlugins/dist/f7-C/
           rm -rf *.tgz
           mv f7-update-RM420FAP "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
-          zip -rq "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.zip" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
-          
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT 
           
