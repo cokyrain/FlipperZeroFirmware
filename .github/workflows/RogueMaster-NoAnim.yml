@@ -41,10 +41,10 @@ jobs:
           git clone --recursive $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
 
-      - name: 增加power&默认配置
-        id: add-power
+      - name: 默认配置
+        id: setting
         run: |
-          sed -i 's/power_limit = 12/power_limit = 53/g' Flipper/firmware/targets/f7/furi_hal/furi_hal_region.c
+          sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/extend_range.txt
           cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
           sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
