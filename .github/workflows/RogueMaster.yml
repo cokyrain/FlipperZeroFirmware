@@ -96,7 +96,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ env.FILE_TIME }}_${{ env.GIT_NAME }}
+          name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.tgz
