@@ -61,8 +61,6 @@ jobs:
           cp ./files/meta.txt flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           rm flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
           cp ./files/frame_0.png flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
-          cp ./files/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
 
       - name: 编译固件
         id: compile
