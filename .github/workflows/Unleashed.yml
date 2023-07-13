@@ -36,7 +36,6 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo timedatectl set-timezone $TZ
-          sudo apt install rename
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
           
@@ -45,7 +44,7 @@ jobs:
           df -hT $PWD
           git clone $REPO_URL
           ls
-          ln -sf /unleashed-firmware /Flipper
+          ln -sf /unleashed-firmware $GITHUB_WORKSPACE/Flipper
           ls
 
       - name: SSH连接管理
@@ -58,16 +57,16 @@ jobs:
       - name: 默认配置
         id: moreconfig
         run: |
-          sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/dangerous_settings
-          sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
-          sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
-          sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
-          sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/false/true/g' $GITHUB_WORKSPACE/Flipper/assets/resources/subghz/assets/dangerous_settings
+          sed -i 's/430000000/430000000,430500000/g' $GITHUB_WORKSPACE/Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' $GITHUB_WORKSPACE/Flipperr/lib/subghz/subghz_setting.c
+          sed -i 's/430000000/430000000,430500000/g' $GITHUB_WORKSPACE/Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/431500000/431500000,432800000/g' $GITHUB_WORKSPACE/Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           
       - name: 编译固件
         id: compile
         run: |
-          cd Flipper/
+          cd $GITHUB_WORKSPACE/Flipper/
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
@@ -82,7 +81,7 @@ jobs:
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
-          cd Flipper/dist/f7-C/
+          cd $GITHUB_WORKSPACE/Flipper/dist/f7-C/
           rm -rf *.tgz
           mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
