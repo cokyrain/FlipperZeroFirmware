@@ -12,7 +12,6 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   NoAnim: false
-  TZ: Asia/Shanghai
   GIT_NAME: RogueMaster
   
 permissions:
@@ -30,44 +29,41 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo timedatectl set-timezone "$TZ"
+          sudo timedatectl set-timezone "Asia/Shanghai"
           sudo apt install rename
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
-          
+
       - name: 下载固件源码
         working-directory: /workdir
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
-          ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/flipperzero-firmware-wPlugins
+          ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
 
-      - name: 增加power&默认配置
-        id: add-power
+      - name: 默认配置
+        id: setting
         run: |
-          sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
-          sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/extend_range.txt
-          cp ./files/setting_user.txt flipperzero-firmware-wPlugins/assets/resources/subghz/assets/
-          sed -i 's/430000000/430000000,430500000/g' flipperzero-firmware-wPlugins/lib/subghz/subghz_setting.c
-          sed -i 's/431500000/431500000,432800000/g' flipperzero-firmware-wPlugins/lib/subghz/subghz_setting.c
-          sed -i 's/430000000/430000000,430500000/g' flipperzero-firmware-wPlugins/applications/main/subghz/views/subghz_frequency_analyzer.c
-          sed -i 's/431500000/431500000,432800000/g' flipperzero-firmware-wPlugins/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/extend_range.txt
+          cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
+          sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           
       - name: 清理Anim
         id: clean-anim
         if: env.NoAnim == 'true' && !cancelled()
         run: |
           shopt -s extglob
-          cp ./files/meta.txt flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
-          cp ./files/frame_0.png flipperzero-firmware-wPlugins/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm -rf flipperzero-firmware-wPlugins/assets/dolphin/external/*
-          cp ./files/manifest.txt flipperzero-firmware-wPlugins/assets/dolphin/external/
+          cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          rm Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
+          cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
 
       - name: 编译固件
         id: compile
         run: |
-          cd flipperzero-firmware-wPlugins/
+          cd Flipper/
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
@@ -82,7 +78,7 @@ jobs:
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
-          cd flipperzero-firmware-wPlugins/dist/f7-C/
+          cd Flipper/dist/f7-C/
           rm -rf *.tgz
           mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
