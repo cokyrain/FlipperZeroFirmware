@@ -57,9 +57,9 @@ jobs:
       - name: 默认配置
         id: moreconfig
         run: |
-          sed -i 's/false/true/g' assets/resources/subghz/assets/dangerous_settings
+          sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/dangerous_settings
           sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
-          sed -i 's/431500000/431500000,432800000/g' Flipper-/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           
