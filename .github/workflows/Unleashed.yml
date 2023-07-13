@@ -45,7 +45,7 @@ jobs:
           df -hT $PWD
           git clone $REPO_URL
           ls
-          ln -sf /unleashed-firmware $GITHUB_WORKSPACE/Flipper
+          ln -sf /unleashed-firmware /Flipper
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
