@@ -19,4 +19,5 @@ Daily update Firmware, no matter whether the source code changes, Enjoy it!
 ----
 
 For more collective :
-<a href="https://github.com/UberGuidoZ/Flipper-IRDB">IRDB</a> 
+[UberGuidoZ/Flipper-IRDB](https://github.com/UberGuidoZ/Flipper-IRDB)
+[UberGuidoZ/Flipper](https://github.com/UberGuidoZ/Flipper)
