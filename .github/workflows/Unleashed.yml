@@ -38,7 +38,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
-          ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/flipperzero-firmware-wPlugins
+          ln -sf /workdir/unleashed-firmware $GITHUB_WORKSPACE/Flipper
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
@@ -47,16 +47,15 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-      - name: 增加power&默认配置
-        id: add-power
+      - name: 默认配置
+        id: setting
         run: |
-          sed -i 's/power_limit = 12/power_limit = 53/g' flipperzero-firmware-wPlugins/firmware/targets/f7/furi_hal/furi_hal_region.c
-          sed -i 's/false/true/g' flipperzero-firmware-wPlugins/assets/resources/subghz/assets/extend_range.txt
-          cp ./files/setting_user.txt flipperzero-firmware-wPlugins/assets/resources/subghz/assets/
-          sed -i 's/430000000/430000000,430500000/g' flipperzero-firmware-wPlugins/lib/subghz/subghz_setting.c
-          sed -i 's/431500000/431500000,432800000/g' flipperzero-firmware-wPlugins/lib/subghz/subghz_setting.c
-          sed -i 's/430000000/430000000,430500000/g' flipperzero-firmware-wPlugins/applications/main/subghz/views/subghz_frequency_analyzer.c
-          sed -i 's/431500000/431500000,432800000/g' flipperzero-firmware-wPlugins/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/dangerous_settings
+          cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
+          sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
 
       - name: 清理Anim
         id: clean-anim
