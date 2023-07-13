@@ -107,7 +107,7 @@ jobs:
           name: ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
-      - name: 生成release标签
+      - name: 生成ReleaseTag
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
@@ -116,7 +116,7 @@ jobs:
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >>$GITHUB_OUTPUT 
           
-      - name: 上传固件到release
+      - name: 上传固件到Release
         uses: softprops/action-gh-release@v1
         if: steps.tag.outputs.status == 'success' && !cancelled()
         env:
