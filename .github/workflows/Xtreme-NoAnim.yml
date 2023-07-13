@@ -45,7 +45,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
-          ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper-Xtreme
+          ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
@@ -54,34 +54,34 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-      - name: 增加power&默认配置
-        id: add-power
+      - name: 默认配置
+        id: setting
         run: |
-          sed -i 's/power_limit = 12/power_limit = 53/g' Flipper-Xtreme/firmware/targets/f7/furi_hal/furi_hal_region.c
-          sed -i 's/430000000/430000000,430500000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
-          sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/lib/subghz/subghz_setting.c
-          sed -i 's/430000000/430000000,430500000/g' Flipper-Xtreme/applications/main/subghz/views/subghz_frequency_analyzer.c
-          sed -i 's/431500000/431500000,432800000/g' Flipper-Xtreme/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/firmware/targets/f7/furi_hal/furi_hal_region.c
+          sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           
       - name: 清理Anim
         if: env.NoAnim == 'true' && !cancelled()
         id: clean-anim
         run: |
           shopt -s extglob
-          sed -i '1,2!d' Flipper-Xtreme/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
+          sed -i '1,2!d' Flipper/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
 
-          rm -rf Flipper-Xtreme/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
-          sed -i '1,9!d' Flipper-Xtreme/assets/dolphin/external/manifest.txt
-          sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper-Xtreme/assets/dolphin/external/manifest.txt
+          rm -rf Flipper/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
+          sed -i '1,9!d' Flipper/assets/dolphin/external/manifest.txt
+          sed -i 's/L1_Waves_128x50/L1_Furippa1_128x64/g' Flipper/assets/dolphin/external/manifest.txt
           
-          rm -rf Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/*
-          cp ./files/meta.txt Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/
-          cp ./files/frame_0.png Flipper-Xtreme/assets/dolphin/external/L1_Furippa1_128x64/
+          rm -rf Flipper/assets/dolphin/external/L1_Furippa1_128x64/*
+          cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Furippa1_128x64/
+          cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Furippa1_128x64/
     
       - name: 编译固件
         id: compile
         run: |
-          cd Flipper-Xtreme/
+          cd Flipper/
           ./fbt updater_package
           echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
@@ -96,7 +96,7 @@ jobs:
         id: organize
         if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
         run: |
-          cd Flipper-Xtreme/dist/f7-C/
+          cd Flipper/dist/f7-C/
           rm -rf *.tgz
           mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
