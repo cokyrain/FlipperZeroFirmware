@@ -17,9 +17,6 @@ env:
 permissions:
   contents: write
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
