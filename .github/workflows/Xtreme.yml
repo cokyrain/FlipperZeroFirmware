@@ -35,7 +35,6 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo timedatectl set-timezone "Asia/Shanghai"
-          sudo apt install rename
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
           
