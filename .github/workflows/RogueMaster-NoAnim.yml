@@ -34,14 +34,17 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
 
       - name: 下载固件源码
+        id: download
         working-directory: /workdir
         run: |
           df -hT $PWD
           git clone $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 默认配置
         id: setting
+        if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
           sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/extend_range.txt
@@ -50,10 +53,11 @@ jobs:
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 清理Anim
         id: clean
-        if: env.NoAnim == 'true' && !cancelled()
+        if: env.NoAnim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
@@ -61,11 +65,10 @@ jobs:
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           rm -rf Flipper/assets/dolphin/external/*
           cp ./files/manifest.txt Flipper/assets/dolphin/external/
-          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 编译固件
         id: compile
-        if: steps.clean.outputs.status == 'success' && !cancelled()
+        if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt updater_package
@@ -75,7 +78,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
-        if: (!cancelled())
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: df -hT
 
       - name: 组织文件
