@@ -54,9 +54,7 @@ jobs:
           rm -rf Flipper/Wifi_DevBoard
           rm -rf Flipper/.gitignore
           rm -rf Flipper/.gitmodules
-          rm -rf Flipper/DonationInfo.md
           rm -rf Flipper/LICENSE
-          rm -rf Flipper/ReadMe.md
           cd Flipper/
           find . -type f -name "" -size 0c | xargs -n 1 rm -f
           find . -type f -name '*.md' -exec rm -rf {} \;
