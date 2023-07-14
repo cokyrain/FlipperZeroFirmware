@@ -70,6 +70,7 @@ jobs:
         id: clean
         run: |
           shopt -s extglob
+          rm -rf Flipper/assets/dolphin/custom/WatchDogs/Anims/!("manifest.txt")
           sed -i '1,2!d' Flipper/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
           rm -rf Flipper/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
           sed -i '1,9!d' Flipper/assets/dolphin/external/manifest.txt
@@ -77,7 +78,6 @@ jobs:
           rm -rf Flipper/assets/dolphin/external/L1_Furippa1_128x64/*
           cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Furippa1_128x64/
           cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Furippa1_128x64/
-          rm -rf Flipper/assets/dolphin/custom
 
       - name: 编译固件
         id: compile
