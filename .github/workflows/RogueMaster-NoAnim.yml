@@ -37,7 +37,7 @@ jobs:
         working-directory: /workdir
         run: |
           df -hT $PWD
-          git clone --recursive $REPO_URL
+          git clone $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
 
       - name: 默认配置
