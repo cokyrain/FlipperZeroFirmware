@@ -58,16 +58,18 @@ jobs:
           sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
 
       - name: 清理Anim
-        id: clean-anim
+        id: clean
         if: env.NoAnim == 'true' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           rm Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 编译固件
         id: compile
+        if: steps.clean.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt updater_package
@@ -77,30 +79,30 @@ jobs:
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 检查磁盘使用情况
-        if: steps.tag.outputs.status == 'success' && !cancelled()
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: df -hT
 
       - name: 组织文件
         id: organize
-        if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/dist/f7-D/
           rm -rf *.tgz
           mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-          echo "status=success" >> $GITHUB_OUTPUT 
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 上传固件目录
         uses: actions/upload-artifact@main
-        if: steps.organize.outputs.status == 'success' && !cancelled()
+        if: env.UPLOAD_FIRMWARE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         with:
           name: ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成ReleaseTag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
           touch release.txt
@@ -109,7 +111,7 @@ jobs:
 
       - name: 上传固件到Release
         uses: softprops/action-gh-release@v1
-        if: steps.tag.outputs.status == 'success' && !cancelled()
+        if: env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && !cancelled()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
