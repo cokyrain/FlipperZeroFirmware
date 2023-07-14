@@ -13,10 +13,10 @@ env:
   UPLOAD_RELEASE: true
   NoAnim: true
   GIT_NAME: RogueMaster-NoAnim
-  
+
 permissions:
   contents: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
-          
+
       - name: 清理Anim
         id: clean
         if: env.NoAnim == 'true' && !cancelled()
@@ -88,14 +88,14 @@ jobs:
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT 
-          
+
       - name: 上传固件目录
         uses: actions/upload-artifact@main
         if: env.UPLOAD_FIRMWARE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         with:
           name: ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
-          
+
       - name: 生成ReleaseTag
         id: tag
         if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
@@ -104,7 +104,7 @@ jobs:
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT 
-          
+
       - name: 上传固件到Release
         uses: softprops/action-gh-release@v1
         if: steps.tag.outputs.status == 'success' && !cancelled()
