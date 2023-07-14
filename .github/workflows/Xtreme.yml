@@ -39,11 +39,13 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
           
       - name: 下载固件源码
+        id: download
         working-directory: /workdir
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
@@ -73,11 +75,10 @@ jobs:
           rm -rf Flipper/assets/dolphin/external/L1_Furippa1_128x64/*
           cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Furippa1_128x64/
           cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Furippa1_128x64/
-          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 编译固件
         id: compile
-        if: steps.clean.outputs.status == 'success' && !cancelled()
+        if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt updater_package
