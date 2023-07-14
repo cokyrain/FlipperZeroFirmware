@@ -79,7 +79,7 @@ jobs:
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 检查磁盘使用情况
-        if: steps.compile.outputs.status == 'success' && !cancelled()
+        if: (!cancelled())
         run: df -hT
 
       - name: 组织文件
