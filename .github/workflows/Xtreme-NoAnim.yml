@@ -77,6 +77,7 @@ jobs:
           rm -rf Flipper/assets/dolphin/external/L1_Furippa1_128x64/*
           cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Furippa1_128x64/
           cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Furippa1_128x64/
+          rm -rf Flipper/assets/dolphin/custom
 
       - name: 编译固件
         id: compile
