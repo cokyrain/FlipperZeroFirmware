@@ -61,7 +61,7 @@ jobs:
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
+          rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           rm -rf Flipper/assets/dolphin/external/*
           cp ./files/manifest.txt Flipper/assets/dolphin/external/
