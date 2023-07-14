@@ -55,6 +55,7 @@ jobs:
           rm -rf Flipper/flipper_toolbox
           rm -rf Flipper/Wav_Player
           rm -rf Flipper/Music_Player
+          rm -rf Flipper/Sub-GHz/Restaurant_Pagers/Pagger-Generator
           rm -rf Flipper/.gitignore
           rm -rf Flipper/.gitmodules
           rm -rf Flipper/LICENSE
