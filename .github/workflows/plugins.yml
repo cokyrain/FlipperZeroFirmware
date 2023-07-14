@@ -42,7 +42,7 @@ jobs:
           echo "status=success" >>$GITHUB_OUTPUT 
           
       - name: 清理无用文件
-        id: cleanfiles
+        id: clean
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
@@ -72,7 +72,7 @@ jobs:
 
       - name: 组织文件
         id: organize
-        if: steps.cleanfiles.outputs.status == 'success' && !cancelled()
+        if: steps.clean.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           zip -r "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.zip" ./*
