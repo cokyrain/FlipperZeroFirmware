@@ -70,6 +70,8 @@ jobs:
         id: clean
         run: |
           shopt -s extglob
+          rm -rf Flipper/assets/dolphin/custom/WatchDogs/Icons
+          rm -rf Flipper/assets/dolphin/custom/WatchDogs/Anims/!("manifest.txt")
           sed -i '1,2!d' Flipper/assets/dolphin/custom/WatchDogs/Anims/manifest.txt
           rm -rf Flipper/assets/dolphin/external/!("L1_Furippa1_128x64"|"manifest.txt")
           sed -i '1,9!d' Flipper/assets/dolphin/external/manifest.txt
@@ -100,6 +102,7 @@ jobs:
           cd Flipper/dist/f7-C/
           rm -rf *.tgz
           mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
+          tar --delete dolphin_custom -vf ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}/resources.tar
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT 
