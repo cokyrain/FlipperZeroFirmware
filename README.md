@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/ba2cf4101bf029d2ada26da2f95121de74581a4d/svg/cn.svg" height="50" width="75"> Auto Compile Firmware for Flipper Zero 
+# <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/ba2cf4101bf029d2ada26da2f95121de74581a4d/svg/cn.svg" height="30" width="45"> Auto Compile Firmware for Flipper Zero 
 
 Thanks to：<br>
 | [RogueMaster](https://github.com/RogueMaster/flipperzero-firmware-wPlugins)  | [Unleashed](https://github.com/DarkFlippers/unleashed-firmware) | [Xtreme](https://github.com/ClaraCrazy/Flipper-Xtreme) |
