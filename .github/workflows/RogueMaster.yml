@@ -13,10 +13,10 @@ env:
   UPLOAD_RELEASE: true
   NoAnim: false
   GIT_NAME: RogueMaster
-  
+
 permissions:
   contents: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,15 +43,16 @@ jobs:
       - name: 默认配置
         id: setting
         run: |
+          sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/firmware/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/extend_range.txt
           cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
           sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
-          
+
       - name: 清理Anim
-        id: clean-anim
+        id: clean
         if: env.NoAnim == 'true' && !cancelled()
         run: |
           shopt -s extglob
@@ -60,16 +61,18 @@ jobs:
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           rm -rf Flipper/assets/dolphin/external/*
           cp ./files/manifest.txt Flipper/assets/dolphin/external/
+          echo "status=success" >>$GITHUB_OUTPUT
 
       - name: 编译固件
         id: compile
+        if: steps.clean.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt updater_package
-          echo "status=success" >>$GITHUB_OUTPUT 
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
+          echo "status=success" >>$GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
         if: (!cancelled())
@@ -77,7 +80,7 @@ jobs:
 
       - name: 组织文件
         id: organize
-        if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/dist/f7-C/
           rm -rf *.tgz
@@ -85,23 +88,23 @@ jobs:
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT 
-          
+
       - name: 上传固件目录
         uses: actions/upload-artifact@main
-        if: steps.organize.outputs.status == 'success' && !cancelled()
+        if: env.UPLOAD_FIRMWARE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         with:
           name: ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成ReleaseTag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
           touch release.txt
           echo "[源码来源]($REPO_URL)" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT 
-          
+
       - name: 上传固件到Release
         uses: softprops/action-gh-release@v1
         if: steps.tag.outputs.status == 'success' && !cancelled()
