@@ -35,7 +35,6 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo timedatectl set-timezone "Asia/Shanghai"
-          sudo apt install rename
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
           
@@ -43,7 +42,7 @@ jobs:
         working-directory: /workdir
         run: |
           df -hT $PWD
-          git clone --recursive $REPO_URL
+          git clone $REPO_URL
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
 
       - name: SSH连接管理
