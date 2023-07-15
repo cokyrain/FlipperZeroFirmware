@@ -120,10 +120,10 @@ jobs:
           files: ${{ env.FIRMWARE }}/*.tgz
 
       - name: Delete workflow runs
-        uses: GitRML/delete-workflow-runs@main
+        uses: FunctionXJB/delete-workflow-runs@main
         with:
-          retain_days: 150
-          keep_minimum_runs: 20
+          retain_days: 30
+          keep_minimum_runs: 100
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.1
