@@ -56,11 +56,15 @@ jobs:
           rm -rf Flipper/Wav_Player
           rm -rf Flipper/Music_Player
           rm -rf Flipper/Sub-GHz/Restaurant_Pagers/Pagger-Generator
-          rm -rf Flipper/.gitignore
-          rm -rf Flipper/.gitmodules
-          rm -rf Flipper/LICENSE
+          rm -rf Flipper/GPIO
+          rm -rf Flipper/Hardware_Troubleshooting
+          rm -rf Flipper/Infrared/ir_remote
+          rm -rf Flipper/Applications/Official/DEV_FW/source
           cd Flipper/
           find . -type f -name "" -size 0c | xargs -n 1 rm -f
+          find . -type f -name '.gitignore' -exec rm -rf {} \;
+          find . -type f -name '.gitmodules' -exec rm -rf {} \;
+          find . -type f -name 'LICENSE' -exec rm -rf {} \;
           find . -type f -name '*.md' -exec rm -rf {} \;
           find . -type f -name '*.pdf' -exec rm -rf {} \;
           find . -type f -name '*.jpg' -exec rm -rf {} \;
