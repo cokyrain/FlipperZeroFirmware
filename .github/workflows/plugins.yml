@@ -121,3 +121,12 @@ jobs:
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete releases and workflows runs
+        uses: ophub/delete-releases-workflows@main
+        with:
+          del_releases: true
+          releases_keep_latest: 30
+          del_workflows: true
+          workflows_keep_day: 30
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
