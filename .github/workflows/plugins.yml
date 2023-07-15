@@ -61,9 +61,9 @@ jobs:
           rm -rf Flipper/Infrared/ir_remote
           rm -rf Flipper/Applications/Official/DEV_FW/source
           rm -rf Flipper/BadUSB/BadUSB-FalsePhilosopher/Misc
-          
           cd Flipper/
           find . -type f -name "" -size 0c | xargs -n 1 rm -f
+          find . -type f -name '.github' -exec rm -rf {} \;
           find . -type f -name '.gitignore' -exec rm -rf {} \;
           find . -type f -name '.gitmodules' -exec rm -rf {} \;
           find . -type f -name 'LICENSE' -exec rm -rf {} \;
