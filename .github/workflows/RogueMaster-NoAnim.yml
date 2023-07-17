@@ -80,6 +80,8 @@ jobs:
         if: env.NoAnim == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           rm -rf Flipper/assets/resources/dolphin/*
+          cd Flipper/assets/resources
+          tar -cf "/Flipper/dist/f7-C/resources.tar" *
 
       - name: 检查磁盘使用情况
         if: steps.compile.outputs.status == 'success' && !cancelled()
