@@ -60,11 +60,9 @@ jobs:
         if: env.NoAnim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
-          cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
-          cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm -rf Flipper/assets/dolphin/external/*
-          cp ./files/manifest.txt Flipper/assets/dolphin/external/
+          rm -rf Flipper/assets/dolphin/internal/*
+          cp -rf Flipper/.blank_files/dolphinIntBlank/* assets/dolphin/internal/
+          cp -rf Flipper/.blank_files/animation_managerBLANK.c applications/services/desktop/animations/animation_manager.c
 
       - name: 编译固件
         id: compile
@@ -76,6 +74,12 @@ jobs:
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 清理Anim2
+        id: clean2
+        if: env.NoAnim == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
+        run: |
+          rm -rf Flipper/assets/resources/dolphin/*
 
       - name: 检查磁盘使用情况
         if: steps.compile.outputs.status == 'success' && !cancelled()
