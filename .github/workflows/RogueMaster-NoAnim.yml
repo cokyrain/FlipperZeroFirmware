@@ -61,7 +61,7 @@ jobs:
         run: |
           shopt -s extglob
           rm -rf Flipper/assets/dolphin/internal/*
-          cp -rf Flipper/.blank_files/dolphinIntBlank/* assets/dolphin/internal/
+          cp -rf Flipper/.blank_files/dolphinIntBlank/* Flipper/assets/dolphin/internal/
           cp -rf Flipper/.blank_files/animation_managerBLANK.c applications/services/desktop/animations/animation_manager.c
 
       - name: 编译固件
