@@ -34,11 +34,13 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
 
       - name: 下载固件源码
+        id: download
         working-directory: /workdir
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
           ln -sf /workdir/unleashed-firmware $GITHUB_WORKSPACE/Flipper
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: SSH连接管理
         uses: P3TERX/ssh2actions@v1.0.0
@@ -49,6 +51,7 @@ jobs:
 
       - name: 默认配置
         id: setting
+        if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
           sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/dangerous_settings
           cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
@@ -56,10 +59,11 @@ jobs:
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 清理Anim
         id: clean
-        if: env.NoAnim == 'true' && !cancelled()
+        if: env.NoAnim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
@@ -67,11 +71,11 @@ jobs:
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/L1_Tv_128x47/
           rm -rf Flipper/assets/dolphin/external/!("manifest.txt")
           sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
-          echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 编译固件
         id: compile
-        if: steps.clean.outputs.status == 'success' && !cancelled()
+        if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt updater_package
