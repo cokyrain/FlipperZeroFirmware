@@ -62,9 +62,11 @@ jobs:
         if: env.NoAnim == 'true' && !cancelled()
         run: |
           shopt -s extglob
-          cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
-          rm Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
-          cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
+          rm Flipper/assets/dolphin/internal/L1_Tv_128x47/*.png
+          cp ./files/frame_0.png Flipper/assets/dolphin/internal/L1_Tv_128x47/
+          rm -rf Flipper/assets/dolphin/external/!("manifest.txt")
+          sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 编译固件
