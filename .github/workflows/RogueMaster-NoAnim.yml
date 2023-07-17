@@ -60,9 +60,11 @@ jobs:
         if: env.NoAnim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
-          rm -rf Flipper/assets/dolphin/internal/*
-          cp -rf Flipper/.blank_files/dolphinIntBlank/* Flipper/assets/dolphin/internal/
-          cp -rf Flipper/.blank_files/animation_managerBLANK.c Flipper/applications/services/desktop/animations/animation_manager.c
+          cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
+          cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          rm -rf Flipper/assets/dolphin/external/*
+          cp ./files/manifest.txt Flipper/assets/dolphin/external/
 
       - name: 编译固件
         id: compile
