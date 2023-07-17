@@ -75,6 +75,9 @@ jobs:
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
+          cd Flipper/dist/f7-C/
+          rm -rf *.tgz
+          mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 清理Anim2
@@ -83,7 +86,8 @@ jobs:
         run: |
           rm -rf Flipper/assets/resources/dolphin/*
           cd Flipper/assets/resources
-          tar -cf "/Flipper/dist/f7-C/resources.tar" *
+          tar -cf "/Flipper/dist/f7-C/${{ env.GIT_NAME }}-${{ env.FILE_TIME }}/resources.tar" *
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
         if: steps.compile.outputs.status == 'success' && !cancelled()
@@ -94,8 +98,6 @@ jobs:
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/dist/f7-C/
-          rm -rf *.tgz
-          mv f7-update-* "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.GIT_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
