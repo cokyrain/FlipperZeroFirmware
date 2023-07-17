@@ -64,7 +64,7 @@ jobs:
           rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           rm -rf Flipper/assets/dolphin/external/*
-          rm -rf Flipper//assets/resources/dolphin/*
+          rm -rf Flipper/assets/resources/dolphin/*
           cp ./files/manifest.txt Flipper/assets/dolphin/external/
 
       - name: 编译固件
