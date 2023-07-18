@@ -47,6 +47,7 @@ jobs:
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
           rm -rf Flipper/assets/resources/wav_player
           rm -rf Flipper/assets/resources/music_player
+          ls Flipper/assets/resources/
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: SSH连接管理
