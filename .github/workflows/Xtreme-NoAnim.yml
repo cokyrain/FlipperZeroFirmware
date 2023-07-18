@@ -45,6 +45,7 @@ jobs:
           df -hT $PWD
           git clone --recursive $REPO_URL
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
+          ls
           rm -rf Flipper/assets/resources/wav_player
           rm -rf Flipper/assets/resources/music_player
           ls Flipper/assets/resources/
