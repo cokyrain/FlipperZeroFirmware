@@ -45,8 +45,6 @@ jobs:
           df -hT $PWD
           git clone --recursive $REPO_URL
           ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
-          rm -rf Flipper/assets/resources/wav_player
-          rm -rf Flipper/assets/resources/music_player
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: SSH连接管理
@@ -82,9 +80,16 @@ jobs:
           cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Furippa1_128x64/
           cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Furippa1_128x64/
 
+      - name: 清理SD
+        if: steps.setting.outputs.status == 'success' && !cancelled()
+        id: cleanSD
+        run: |
+          rm -rf Flipper/assets/resources/wav_player
+          rm -rf Flipper/assets/resources/music_player
+
       - name: 编译固件
         id: compile
-        if: steps.setting.outputs.status == 'success' && !cancelled()
+        if: steps.cleanSD.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt updater_package
