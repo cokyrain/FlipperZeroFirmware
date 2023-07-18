@@ -80,14 +80,17 @@ jobs:
           cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Furippa1_128x64/
           cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Furippa1_128x64/
 
-      - name: 编译固件
-        id: compile
+      - name: 清理SD
         if: steps.setting.outputs.status == 'success' && !cancelled()
+        id: cleanSD
         run: |
-          ls
           rm -rf Flipper/assets/resources/wav_player
           rm -rf Flipper/assets/resources/music_player
-          ls Flipper/assets/resources/
+
+      - name: 编译固件
+        id: compile
+        if: steps.cleanSD.outputs.status == 'success' && !cancelled()
+        run: |
           cd Flipper/
           ./fbt updater_package
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
