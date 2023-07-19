@@ -86,6 +86,7 @@ jobs:
         run: |
           rm -rf Flipper/assets/resources/wav_player
           rm -rf Flipper/assets/resources/music_player
+          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 编译固件
         id: compile
