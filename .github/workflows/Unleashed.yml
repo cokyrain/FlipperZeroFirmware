@@ -7,12 +7,12 @@ on:
     inputs:
       anim:
         required: false
-        default: 'false'
+        default: 'no'
         type: choice
         description: Need Anim ?
         options: 
-        - 'false'
-        - 'true'
+        - 'yes'
+        - 'no'
   schedule:
     - cron: 30 23 * * *
 
@@ -71,7 +71,7 @@ jobs:
 
       - name: 清理Anim
         id: clean
-        if: github.event.inputs.anim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
+        if: github.event.inputs.anim == 'no' && steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
@@ -89,7 +89,7 @@ jobs:
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
-          [ github.event.inputs.anim == 'true' ] && echo "GIT_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
+          [ github.event.inputs.anim == 'no' ] && echo "GIT_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
