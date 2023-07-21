@@ -5,11 +5,11 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      name:
+      anim:
         required: false
         default: 'false'
         type: choice
-        description: Who to greet
+        description: Need Anim ?
         options: 
         - 'false'
         - 'true'
@@ -20,7 +20,6 @@ env:
   REPO_URL: https://github.com/DarkFlippers/unleashed-firmware
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  NoAnim: false
   GIT_NAME: Unleashed
   
 permissions:
@@ -72,7 +71,7 @@ jobs:
 
       - name: 清理Anim
         id: clean
-        if: env.NoAnim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
+        if: github.event.inputs.anim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
@@ -80,7 +79,6 @@ jobs:
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/L1_Tv_128x47/
           rm -rf Flipper/assets/dolphin/external/!("manifest.txt")
           sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
-          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 编译固件
         id: compile
@@ -91,6 +89,7 @@ jobs:
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
+          [ github.event.inputs.anim == 'true' ] && echo "GIT_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
