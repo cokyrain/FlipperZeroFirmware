@@ -1,5 +1,5 @@
 # Build Flipper Zero Firmware using GitHub Actions
-name: Build Unleashed
+name: Build Unleashed-${{ github.event.inputs.anim }}
 
 on:
   repository_dispatch:
