@@ -40,16 +40,16 @@ jobs:
           sudo timedatectl set-timezone "Asia/Shanghai"
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
+          echo "FILE_NAME=${{ env.GIT_NAME }}-${{ github.event.inputs.anim }}" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}"
+          echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
+          echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
 
       - name: 下载固件源码
         id: download
         working-directory: /workdir
         run: |
           df -hT $PWD
-          echo "FILE_NAME=${{ env.GIT_NAME }}-${{ github.event.inputs.anim }}" >> $GITHUB_ENV
-          echo "${{ env.FILE_NAME }}"
-          echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
-          echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           git clone --recursive $REPO_URL
           ln -sf /workdir/unleashed-firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
@@ -65,7 +65,6 @@ jobs:
         id: setting
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
-          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           sed -i 's/false/true/g' Flipper/assets/resources/subghz/assets/dangerous_settings
           cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
           sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
