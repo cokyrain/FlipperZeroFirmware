@@ -5,7 +5,7 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    - cron: 30 23 * * *
+    - cron: 30 11/2 * * *
 
 env:
   REPO_URL: https://github.com/UberGuidoZ/Flipper
