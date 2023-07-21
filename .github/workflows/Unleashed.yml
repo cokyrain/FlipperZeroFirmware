@@ -41,7 +41,7 @@ jobs:
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
           [ github.event.inputs.anim == 'yes' ] && echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
-          [ github.event.inputs.anim == 'no' ] && echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
+          [ github.event.inputs.anim == 'no' ] && echo "FILE_NAME=${{ env.GIT_NAME }}-NoAnim" >> $GITHUB_ENV
 
       - name: 下载固件源码
         id: download
