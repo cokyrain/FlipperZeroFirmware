@@ -20,7 +20,7 @@ env:
   REPO_URL: https://github.com/DarkFlippers/unleashed-firmware
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  GIT_NAME: Unleashed
+  GIT_NAME: Unleashed-${{ github.event.inputs.anim }}
   
 permissions:
   contents: write
