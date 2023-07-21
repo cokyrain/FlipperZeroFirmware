@@ -20,8 +20,8 @@ env:
   REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  GIT_NAME: ${{ github.event.inputs.anim }}
-  FILE_NAME: RogueMaster-${{ github.event.inputs.anim }}
+  GIT_NAME: RogueMaster
+  FILE_NAME: $GIT_NAME-${{ github.event.inputs.anim }}
 
 permissions:
   contents: write
