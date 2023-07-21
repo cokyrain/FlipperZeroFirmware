@@ -24,7 +24,6 @@ env:
   REPO_URL: https://github.com/Flipper-XFW/Xtreme-Firmware
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
-  NoAnim: false
   GIT_NAME: Xtreme-${{ github.event.inputs.anim }}
 
 permissions:
@@ -77,7 +76,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
           
       - name: 清理Anim
-        if: env.NoAnim == 'true' && steps.setting.outputs.status == 'success' && !cancelled()
+        if: github.event.inputs.anim == 'NoAnim' && steps.setting.outputs.status == 'success' && !cancelled()
         id: clean
         run: |
           shopt -s extglob
