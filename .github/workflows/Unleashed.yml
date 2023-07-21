@@ -47,10 +47,22 @@ jobs:
         run: |
           df -hT $PWD
           ${{ github.event.inputs.anim }} == 'yes' && echo "FILE_NAME=${{ env.GIT_NAME }}" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           ${{ github.event.inputs.anim }} == 'no' && echo "FILE_NAME=${{ env.GIT_NAME }}-NoAnim" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          ${{ github.event.inputs.anim }} == yes && echo "FILE_NAME=${{ env.GIT_NAME }}-" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          ${{ github.event.inputs.anim }} == no && echo "FILE_NAME=${{ env.GIT_NAME }}--NoAnim" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          [${{ github.event.inputs.anim }} == yes] && echo "FILE_NAME=${{ env.GIT_NAME }}--" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          [${{ github.event.inputs.anim }} == no] && echo "FILE_NAME=${{ env.GIT_NAME }}---NoAnim" >> $GITHUB_ENV
+          [${{ github.event.inputs.anim }} == 'yes'] && echo "FILE_NAME=${{ env.GIT_NAME }}--" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          [${{ github.event.inputs.anim }} == 'no'] && echo "FILE_NAME=${{ env.GIT_NAME }}---NoAnim" >> $GITHUB_ENV
+          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
-          echo "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           git clone --recursive $REPO_URL
           ln -sf /workdir/unleashed-firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
