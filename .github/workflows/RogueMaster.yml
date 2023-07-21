@@ -14,7 +14,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: 30 5/4 * * *
+    - cron: 0/3 * * * *
 
 env:
   REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
