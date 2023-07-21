@@ -13,8 +13,6 @@ on:
         options: 
         - 'NoAnim'
         - 'Anim'
-  schedule:
-    - cron: 30 23 * * *
 
 env:
   REPO_URL: https://github.com/DarkFlippers/unleashed-firmware
