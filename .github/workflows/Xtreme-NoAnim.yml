@@ -44,7 +44,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone --recursive $REPO_URL
-          ln -sf /workdir/Flipper-Xtreme $GITHUB_WORKSPACE/Flipper
+          ln -sf /workdir/Xtreme-Firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: SSH连接管理
