@@ -4,6 +4,15 @@ name: Build Unleashed
 on:
   repository_dispatch:
   workflow_dispatch:
+    inputs:
+      name:
+        required: false
+        default: 'false'
+        type: choice
+        description: Who to greet
+        options: 
+        - 'false'
+        - 'true'
   schedule:
     - cron: 30 23 * * *
 
