@@ -18,8 +18,6 @@ on:
 
 env:
   REPO_URL: https://github.com/Flipper-XFW/Xtreme-Firmware
-  UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
   GIT_NAME: Xtreme
 
 permissions:
@@ -117,14 +115,14 @@ jobs:
 
       - name: 上传固件目录
         uses: actions/upload-artifact@main
-        if: env.UPLOAD_FIRMWARE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+        if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
           name: ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成ReleaseTag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+        if: steps.organize.outputs.status == 'success' && !cancelled()
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >> $GITHUB_OUTPUT 
           touch release.txt
