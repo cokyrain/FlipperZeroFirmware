@@ -18,8 +18,6 @@ on:
 
 env:
   REPO_URL: https://github.com/DarkFlippers/unleashed-firmware
-  UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
   GIT_NAME: Unleashed
   
 permissions:
@@ -102,14 +100,14 @@ jobs:
 
       - name: 上传固件目录
         uses: actions/upload-artifact@main
-        if: env.UPLOAD_FIRMWARE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+        if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
           name: ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
       - name: 生成ReleaseTag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && steps.organize.outputs.status == 'success' && !cancelled()
+        if: steps.organize.outputs.status == 'success' && !cancelled()
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >> $GITHUB_OUTPUT 
           touch release.txt
@@ -118,7 +116,7 @@ jobs:
 
       - name: 上传固件到Release
         uses: softprops/action-gh-release@v1
-        if: env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && !cancelled()
+        if: steps.tag.outputs.status == 'success' && !cancelled()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
