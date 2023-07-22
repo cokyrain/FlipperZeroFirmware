@@ -13,10 +13,6 @@ on:
         options: 
         - 'NoAnim'
         - 'Anim'
-      ssh:
-        description: 'SSH connection to Actions'
-        required: false
-        default: 'false'
   schedule:
     - cron: 30 1/4 * * *
 
@@ -56,13 +52,6 @@ jobs:
           git clone --recursive $REPO_URL
           ln -sf /workdir/Xtreme-Firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
-
-      - name: SSH连接管理
-        uses: P3TERX/ssh2actions@v1.0.0
-        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-        env:
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
       - name: 默认配置
         id: setting
