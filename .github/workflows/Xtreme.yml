@@ -14,7 +14,8 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: 30 1/4 * * *
+    - cron: 8 6/8 * * *
+    - cron: 38 7/4 * * *
 
 env:
   REPO_URL: https://github.com/Flipper-XFW/Xtreme-Firmware
@@ -63,7 +64,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
           
       - name: 清理Anim
-        if: github.event.inputs.anim != 'Anim' && steps.setting.outputs.status == 'success' && !cancelled()
+        if: $(date "+%M")!='06' && github.event.inputs.anim != 'Anim' && !cancelled()
         id: clean
         run: |
           shopt -s extglob
