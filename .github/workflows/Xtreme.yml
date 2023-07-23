@@ -65,7 +65,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
           
       - name: 清理Anim
-        if: ${{ env.TIME_MINI }}!='06' github.event.inputs.anim != 'Anim' && && !cancelled()
+        if: ${{ env.TIME_MINI }}<'38' github.event.inputs.anim != 'Anim' && && !cancelled()
         id: clean
         run: |
           shopt -s extglob
