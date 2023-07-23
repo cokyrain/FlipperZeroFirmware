@@ -14,8 +14,8 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: 8 6/8 * * *
-    - cron: 38 7/4 * * *
+    - cron: 8 6/12 * * *
+    - cron: 38 7/12 * * *
 
 env:
   REPO_URL: https://github.com/DarkFlippers/unleashed-firmware
@@ -42,6 +42,7 @@ jobs:
           echo $(date "+%M")
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
+          echo "TIME_MINI=$(date "+%M")" >> $GITHUB_ENV
           echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 下载固件源码
@@ -67,7 +68,7 @@ jobs:
 
       - name: 清理Anim
         id: clean
-        if: ${{ $date "+%M" }}!='06' github.event.inputs.anim != 'Anim' && && !cancelled()
+        if: ${{ env.TIME_MINI }}!='06' github.event.inputs.anim != 'Anim' && && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
