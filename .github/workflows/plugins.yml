@@ -132,6 +132,7 @@ jobs:
         uses: ophub/delete-releases-workflows@main
         with:
           del_releases: true
+          delete_tags: true
           releases_keep_latest: 30
           del_workflows: true
           workflows_keep_day: 30
