@@ -14,8 +14,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: 8 6 * * *
-    - cron: 38 11/12 * * *
+    - cron: 45 5,11/12 * * ?
 env:
   REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
   GIT_NAME: RogueMaster
@@ -40,7 +39,7 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
-          echo "TIME_MINI=$(date "+%M")" >> $GITHUB_ENV
+          echo "TIME_HOUR=$(date "+%k")" >> $GITHUB_ENV
           echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 下载固件源码
@@ -67,7 +66,7 @@ jobs:
 
       - name: 清理Anim
         id: clean
-        if: ${{ env.TIME_MINI }}<'38' github.event.inputs.anim != 'Anim' && && !cancelled()
+        if: ${{ env.TIME_HOUR }}<7 github.event.inputs.anim != 'Anim' && && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
