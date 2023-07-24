@@ -14,8 +14,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: 8 6 * * *
-    - cron: 38 7/12 * * *
+    - cron: 40 11,22,23 * * ?
 
 env:
   REPO_URL: https://github.com/Flipper-XFW/Xtreme-Firmware
@@ -41,7 +40,7 @@ jobs:
           sudo chown $USER:$GROUPS /workdir
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
-          echo "TIME_MINI=$(date "+%M")" >> $GITHUB_ENV
+          echo "TIME_HOUR=$(date "+%k")" >> $GITHUB_ENV
           echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
 
       - name: 下载固件源码
@@ -65,7 +64,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
           
       - name: 清理Anim
-        if: ${{ env.TIME_MINI }}<'38' github.event.inputs.anim != 'Anim' && && !cancelled()
+        if: ${{ env.TIME_HOUR }}>6 && github.event.inputs.anim != 'Anim' && !cancelled()
         id: clean
         run: |
           shopt -s extglob
