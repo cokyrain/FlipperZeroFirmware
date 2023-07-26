@@ -48,7 +48,6 @@ jobs:
         working-directory: /workdir
         run: |
           df -hT $PWD
-          echo "${{ env.TIME_HOUR }}"
           git clone --recursive $REPO_URL
           ln -sf /workdir/Xtreme-Firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
