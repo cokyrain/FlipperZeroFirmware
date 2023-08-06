@@ -135,4 +135,4 @@ jobs:
           releases_keep_latest: 30
           del_workflows: true
           workflows_keep_day: 30
-          gh_token: ${{ secrets.GITHUB_TOKEN }}
+          gh_token: ${{ secrets.GH_TOKEN }}
