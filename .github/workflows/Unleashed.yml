@@ -135,11 +135,3 @@ jobs:
           del_workflows: true
           workflows_keep_day: 30
           gh_token: ${{ secrets.GH_TOKEN }}
-
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@v0.2.1
-        with:
-          keep_latest: 20
-          delete_tags: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
