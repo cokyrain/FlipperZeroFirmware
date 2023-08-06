@@ -126,11 +126,15 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.tgz
 
-      - name: Delete workflow runs
-        uses: FunctionXJB/delete-workflow-runs@main
+      - name: Delete releases and workflows runs
+        uses: ophub/delete-releases-workflows@main
         with:
-          retain_days: 30
-          keep_minimum_runs: 100
+          del_releases: true
+          delete_tags: true
+          releases_keep_latest: 30
+          del_workflows: true
+          workflows_keep_day: 30
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Remove old Releases
         uses: dev-drprasad/delete-older-releases@v0.2.1
