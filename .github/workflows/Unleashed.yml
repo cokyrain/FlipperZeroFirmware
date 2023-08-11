@@ -14,7 +14,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: '40 3,9,5/8 * * ?'
+    - cron: '40 3,23,5-13/4 * * ?'
 
 env:
   REPO_URL: https://github.com/DarkFlippers/unleashed-firmware
