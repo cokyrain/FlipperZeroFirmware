@@ -94,10 +94,10 @@ jobs:
         run: |
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
           tar zxvf all-the-apps-extra.tgz
+          tar -rvf Flipper/dist/f7-D/resources.tar extra_pack_build/artifacts-extra/*
           cd Flipper/dist/f7-D/
           rm -rf *.tgz
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          tar -rvf ./resources.tar ./././extra_pack_build/artifacts-extra/*
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
