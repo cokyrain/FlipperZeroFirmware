@@ -76,6 +76,7 @@ jobs:
           sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
           tar zxf all-the-apps-extra.tgz
+          mkdir Flipper/assets/resources/apps/
           cp -rf ./extra_pack_build/artifacts-extra/* Flipper/assets/resources/apps/
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
