@@ -48,6 +48,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone $REPO_URL
+          ./fbt updater_package
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
