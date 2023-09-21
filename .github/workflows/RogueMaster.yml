@@ -49,7 +49,7 @@ jobs:
           df -hT $PWD
           git clone $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
-          cd Flipper/
+          cd flipperzero-firmware-wPlugins
           fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
