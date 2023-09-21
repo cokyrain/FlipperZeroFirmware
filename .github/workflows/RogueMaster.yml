@@ -49,7 +49,6 @@ jobs:
           df -hT $PWD
           git clone $REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
-          flipperzero-firmware-wPlugins/fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 默认配置
