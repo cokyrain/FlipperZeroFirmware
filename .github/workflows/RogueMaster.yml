@@ -14,7 +14,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: '40 3,23,5-13/4 * * ?'
+    - cron: '35 3,23,5-13/4 * * ?'
 env:
   REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
   GIT_NAME: RogueMaster
@@ -132,7 +132,7 @@ jobs:
         with:
           delete_releases: true
           delete_tags: true
-          releases_keep_latest: 30
+          releases_keep_latest: 300
           delete_workflows: true
-          workflows_keep_day: 30
+          workflows_keep_day: 300
           gh_token: ${{ secrets.GH_TOKEN }}
