@@ -57,7 +57,7 @@ jobs:
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
           sed -i 's/false/true/g' Flipper/applications/main/subghz/resources/subghz/assets/dangerous_settings
-          cp ./files/setting_user.txt Flipper/assets/resources/subghz/assets/
+          cp ./files/setting_user.txt Flipper/applications/main/subghz/resources/subghz/assets/
           sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
