@@ -56,7 +56,7 @@ jobs:
         id: setting
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
-          sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/firmware/targets/f7/furi_hal/furi_hal_region.c
+          sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/targets/f7/furi_hal/furi_hal_region.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
