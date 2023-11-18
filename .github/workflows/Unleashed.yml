@@ -74,10 +74,6 @@ jobs:
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/L1_Tv_128x47/
           rm -rf Flipper/assets/dolphin/external/!("manifest.txt")
           sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
-          wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
-          tar zxf all-the-apps-extra.tgz
-          #mkdir Flipper/assets/resources/apps/
-          #cp -rf ./extra_pack_build/artifacts-extra/* Flipper/assets/resources/apps/
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
       - name: 编译固件
@@ -96,6 +92,10 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
+          wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
+          tar zxf all-the-apps-extra.tgz
+          #mkdir Flipper/assets/resources/apps/
+          #cp -rf ./extra_pack_build/artifacts-extra/* Flipper/assets/resources/apps/
           cd Flipper/dist/f7-D/
           ls
           rm -rf *.tgz
