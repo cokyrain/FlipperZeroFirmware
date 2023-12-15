@@ -1,5 +1,5 @@
 # Build Flipper Zero Firmware using GitHub Actions
-name: Build RogueMaster
+name: Build RogueMasterRefactors
 
 on:
   repository_dispatch:
