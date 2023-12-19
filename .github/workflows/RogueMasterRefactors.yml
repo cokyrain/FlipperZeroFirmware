@@ -16,7 +16,7 @@ on:
   schedule:
     - cron: '35 3,23,5-13/4 * * ?'
 env:
-  REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
+  REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins.git
   Branch: refactors
   GIT_NAME: RogueMaster
 
