@@ -122,11 +122,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          asset: patch
           name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*.tgz
+          tag: ${{ steps.tag.outputs.release_tag }}
+          bodyFile: release.txt
+          artifacts: ${{ env.FIRMWARE }}/*.tgz
+          allowUpdates: true
 
       - name: Delete releases and workflows runs
         uses: ophub/delete-releases-workflows@main
