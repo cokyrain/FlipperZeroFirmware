@@ -122,6 +122,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          asset: patch
           name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
