@@ -117,16 +117,15 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 上传固件到Release
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v1
         if: steps.tag.outputs.status == 'success' && !cancelled()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
-          tag: ${{ steps.tag.outputs.release_tag }}
-          bodyFile: release.txt
-          artifacts: ${{ env.FIRMWARE }}/*.tgz
-          allowUpdates: true
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          body_path: release.txt
+          files: ${{ env.FIRMWARE }}/*.tgz
 
       - name: Delete releases and workflows runs
         uses: ophub/delete-releases-workflows@main
