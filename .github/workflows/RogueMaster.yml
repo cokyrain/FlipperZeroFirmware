@@ -32,13 +32,14 @@ jobs:
       - name: 检查库更新情况
         id: checknew
         run: |
-          curl https://api.github.com/repos/$REPO_URL > index.json
+          curl https://api.github.com/repos/$REPO_URL/commits > index.json
+          commits_time=$(cat index.json | grep "date" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/\"//g' | sed 's/T/ /g' | sed 's/Z//g')
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
-          echo $(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')  $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
-          echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
-          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) -le 14400 ]
+          echo $commits_time  $(date +%s -d "$commits_time")
+          echo $(($(date +%s) - $(date +%s -d "$commits_time")))
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
             then
-              echo "CODE_TIME=$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')" >> $GITHUB_ENV
+              echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
               echo "status=success" >> $GITHUB_OUTPUT
           else
               echo "No Update"
