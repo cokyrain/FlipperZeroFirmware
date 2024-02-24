@@ -33,10 +33,10 @@ jobs:
         id: checknew
         run: |
           curl https://api.github.com/repos/$REPO_URL > index.json
-          echo $(TZ=UTC date +%s)
-          echo $(TZ=UTC date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
-          echo $(($(TZ=UTC date +%s) - $(TZ=UTC date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
-          if [ $(($(TZ=UTC date +%s) - $(TZ=UTC date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) -le 14400 ]
+          echo $(date +%s)
+          echo $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
+          echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
+          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) -le 14400 ]
             then
               echo "IFNEW=TRUE" >> $GITHUB_ENV
               echo "status=success" >> $GITHUB_OUTPUT
