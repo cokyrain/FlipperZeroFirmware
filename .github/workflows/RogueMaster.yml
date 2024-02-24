@@ -31,6 +31,7 @@ jobs:
       - name: 检查库更新情况
         id: checknew
         run: |
+          timedatectl
           curl https://api.github.com/repos/$REPO_URL > index.json
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')  $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
