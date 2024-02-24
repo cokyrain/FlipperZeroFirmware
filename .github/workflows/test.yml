@@ -16,7 +16,8 @@ on:
   schedule:
     - cron: '35 3,23,5-13/4 * * ?'
 env:
-  REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
+  GITHUB_URL: https://github.com/
+  REPO_URL: RogueMaster/flipperzero-firmware-wPlugins
   GIT_NAME: RogueMaster
 
 permissions:
@@ -64,7 +65,7 @@ jobs:
         if: steps.checknew.outputs.status == 'success' && !cancelled()
         run: |
           df -hT $PWD
-          git clone $REPO_URL
+          git clone $GITHUB_URL/$REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
