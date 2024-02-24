@@ -34,6 +34,8 @@ jobs:
       - name: 检查库更新情况
         id: checknew
         run: |
+          date
+          date +'%Y-%m-%d %H:%M:%S'
           curl https://api.github.com/repos/$REPO_URL > index.json
           echo $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)
           times=$(($(date +%s) - $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)))
@@ -43,7 +45,7 @@ jobs:
         id: environment
         env:
           DEBIAN_FRONTEND: noninteractive
-        if: ${{env.TIMES}} > 10000 && !cancelled()
+        if: ${{env.TIMES}} > 10000 && steps.checknew.outputs.status == 'success' && !cancelled()
         run: |
           sudo timedatectl set-timezone "Asia/Shanghai"
           sudo mkdir -p /workdir
