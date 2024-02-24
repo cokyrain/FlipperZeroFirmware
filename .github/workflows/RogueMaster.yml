@@ -26,11 +26,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
-      - name: 检查项目分支
-        id: check
-        uses: actions/checkout@v3
-
+    
       - name: 检查库更新情况
         id: checknew
         run: |
@@ -44,6 +40,10 @@ jobs:
           echo $times
           echo $times2
           echo "TIMES=$times" >> $GITHUB_ENV
+
+      - name: 检查项目分支
+        id: check
+        uses: actions/checkout@v3
 
       - name: 编译环境
         id: environment
