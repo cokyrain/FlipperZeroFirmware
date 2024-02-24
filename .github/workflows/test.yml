@@ -47,22 +47,15 @@ jobs:
         id: checknew
         run: |
           curl https://api.github.com/repos/$REPO_URL > index.json
-          ndate=$(date "+%Y%m%d")
-          udate=$(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') "+%Y%m%d")
-          nhour=$(date "+%H")
-          uhour=$(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') "+%H")
-          nminite=$(date "+%M")
-          uminite=$(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') "+%M")
-          if [ $(($ndate-$udate))>1 ]
+          echo "TIMES=$(($(date +%s) - $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)))" >> $GITHUB_ENV
+          if [ ${{ env.TIMES }} >18000 ]
             then
               echo "IFNEW=TRUE" >> $GITHUB_ENV
               echo "status=success" >> $GITHUB_OUTPUT
-          elif [ $(($nhour-$uhour))>4 ]
-            then
-              echo "IFNEW=TRUE" >> $GITHUB_ENV
-              echo "status=success" >> $GITHUB_OUTPUT
+              echo ${{ env.TIMES }}
           else
               echo "IFNEW=FALSE" >> $GITHUB_ENV
+              echo ${{ env.TIMES }}
           fi
 
       - name: 下载固件源码
