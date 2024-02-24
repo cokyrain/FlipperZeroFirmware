@@ -41,7 +41,7 @@ jobs:
           times2=$(($time1-$time2))
           echo $time1
           echo $time2
-          echo $times1
+          echo $times
           echo $times2
           echo "TIMES=$times" >> $GITHUB_ENV
 
