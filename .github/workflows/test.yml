@@ -14,7 +14,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: '35 3,23,5-13/4 * * ?'
+    - cron: '35 3-23/4 * * ?'
 env:
   GITHUB_URL: https://github.com/
   REPO_URL: RogueMaster/flipperzero-firmware-wPlugins
@@ -35,7 +35,7 @@ jobs:
           echo $(date +%s)
           echo $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
           echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
-          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) >18000 ]
+          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) <14400 ]
             then
               echo "IFNEW=TRUE" >> $GITHUB_ENV
               echo "status=success" >> $GITHUB_OUTPUT
