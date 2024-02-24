@@ -45,10 +45,12 @@ jobs:
 
       - name: 检查项目分支
         id: check
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         uses: actions/checkout@v4
 
       - name: 编译环境
         id: environment
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -154,5 +156,5 @@ jobs:
           delete_tags: true
           releases_keep_latest: 3000
           delete_workflows: true
-          workflows_keep_day: 3000
+          workflows_keep_day: 365
           gh_token: ${{ secrets.GH_TOKEN }}
