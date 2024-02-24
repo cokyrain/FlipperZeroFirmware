@@ -5,11 +5,12 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    - cron: 5 10 * * *
+    - cron: 25 23 * * *
 
 env:
-  REPO_URL: https://github.com/UberGuidoZ/Flipper
-  REPO_URL2: https://github.com/logickworkshop/Flipper-IRDB
+  GITHUB_URL: https://github.com/
+  REPO_URL: UberGuidoZ/Flipper
+  REPO_URL2: logickworkshop/Flipper-IRDB
   UPLOAD_RELEASE: true
   GIT_NAME: Plugins
   
@@ -21,10 +22,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: 检查库更新情况
+        id: checknew
+        run: |
+          curl https://api.github.com/repos/$REPO_URL > index.json
+          echo $(date +%s)
+          echo $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
+          echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
+          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) <86400 ]
+            then
+              echo "IFNEW=TRUE" >> $GITHUB_ENV
+              echo "status=success" >> $GITHUB_OUTPUT
+          else
+              echo "IFNEW=FALSE" >> $GITHUB_ENV
+          fi
+
       - name: 检查项目分支
-        uses: actions/checkout@v3
+        id: check
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        uses: actions/checkout@v4
 
       - name: 编译环境
+        id: environment
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -34,13 +54,14 @@ jobs:
 
       - name: 下载源码
         id: download
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         working-directory: /workdir
         run: |
           df -hT $PWD
           echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "GIT_NAME=$GIT_NAME" >> $GITHUB_ENV
-          git clone --recursive $REPO_URL
+          git clone --recursive $GITHUB_URL/$REPO_URL
           ln -sf /workdir/Flipper $GITHUB_WORKSPACE/Flipper
           echo "status=success" >>$GITHUB_OUTPUT 
           
@@ -100,7 +121,7 @@ jobs:
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >>$GITHUB_OUTPUT 
           touch release.txt
-          echo "[源码来源]($REPO_URL)" >> release.txt
+          echo "[源码来源]($GITHUB_URL/$REPO_URL)" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT 
           
       - name: 上传固件到Release
@@ -114,12 +135,13 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.zip
 
-      - name: Delete releases and workflows runs
+      - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
+        if: steps.tag.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
-          releases_keep_latest: 300
+          releases_keep_latest: 3000
           delete_workflows: true
-          workflows_keep_day: 300
+          workflows_keep_day: 365
           gh_token: ${{ secrets.GH_TOKEN }}
