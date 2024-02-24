@@ -14,9 +14,10 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: '35 3,23,5-13/4 * * ?'
+    - cron: '35 3-23/4 * * ?'
 env:
-  REPO_URL: https://github.com/RogueMaster/flipperzero-firmware-wPlugins
+  GITHUB_URL: https://github.com/
+  REPO_URL: RogueMaster/flipperzero-firmware-wPlugins
   GIT_NAME: RogueMaster
 
 permissions:
@@ -27,9 +28,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: 检查库更新情况
+        id: checknew
+        run: |
+          curl https://api.github.com/repos/$REPO_URL > index.json
+          echo $(date +%s)
+          echo $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
+          echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
+          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) <14400 ]
+            then
+              echo "IFNEW=TRUE" >> $GITHUB_ENV
+              echo "status=success" >> $GITHUB_OUTPUT
+          else
+              echo "IFNEW=FALSE" >> $GITHUB_ENV
+          fi
+
       - name: 检查项目分支
         id: check
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 编译环境
         id: environment
@@ -43,15 +59,14 @@ jobs:
           echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
           echo "TIME_HOUR=$(date "+%k")" >> $GITHUB_ENV
           echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
-          echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 下载固件源码
         id: download
         working-directory: /workdir
-        if: steps.environment.outputs.status == 'success' && !cancelled()
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         run: |
           df -hT $PWD
-          git clone $REPO_URL
+          git clone $GITHUB_URL/$REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
@@ -117,7 +132,7 @@ jobs:
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >> $GITHUB_OUTPUT 
           touch release.txt
-          echo "[源码来源]($REPO_URL)" >> release.txt
+          echo "[源码来源]($GITHUB_URL/$REPO_URL)" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 上传固件到Release
@@ -131,8 +146,9 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.tgz
 
-      - name: Delete releases and workflows runs
+      - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
+        if: steps.tag.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
