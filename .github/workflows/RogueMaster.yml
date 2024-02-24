@@ -34,11 +34,15 @@ jobs:
       - name: 检查库更新情况
         id: checknew
         run: |
-          date
-          date +'%Y-%m-%d %H:%M:%S'
           curl https://api.github.com/repos/$REPO_URL > index.json
-          echo $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)
+          time1=$(date +%s)
+          time2=$(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)
           times=$(($(date +%s) - $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)))
+          times2=$(($time1-$time2))
+          echo $time1
+          echo $time2
+          echo $times1
+          echo $times2
           echo "TIMES=$times" >> $GITHUB_ENV
 
       - name: 编译环境
