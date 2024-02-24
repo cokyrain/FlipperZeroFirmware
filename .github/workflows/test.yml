@@ -147,8 +147,9 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.tgz
 
-      - name: Delete releases and workflows runs
+      - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
+        if: steps.tag.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
