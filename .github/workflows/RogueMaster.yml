@@ -38,10 +38,9 @@ jobs:
           echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
           if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) -le 14400 ]
             then
-              echo "IFNEW=TRUE" >> $GITHUB_ENV
+              echo "codetime=$(cat index.json | grep "pushed_at" | head -n 1 | sed 's/  "pushed_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')" >> $GITHUB_ENV
               echo "status=success" >> $GITHUB_OUTPUT
           else
-              echo "IFNEW=FALSE" >> $GITHUB_ENV
               echo "No Update"
           fi
 
@@ -130,29 +129,25 @@ jobs:
           name: ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
-      - name: 生成ReleaseTag
-        id: tag
+      - name: 上传Release
+        id: release
         if: steps.organize.outputs.status == 'success' && !cancelled()
-        run: |
-          echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >> $GITHUB_OUTPUT 
-          touch release.txt
-          echo "[源码来源]($GITHUB_URL/$REPO_URL)" >> release.txt
-          echo "status=success" >> $GITHUB_OUTPUT
-
-      - name: 上传固件到Release
-        uses: softprops/action-gh-release@v1
-        if: steps.tag.outputs.status == 'success' && !cancelled()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ncipollo/release-action@v1
         with:
           name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*.tgz
+          allowUpdates: true
+          tag: ${{ env.FILE_DATE }}-${{ env.GIT_NAME }}
+          commit: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            #### $GIT_NAME 固件：
+            - [源码仓库]($GITHUB_URL/$REPO_URL)
+            - 源码更新时间：${{ env.codetime }}
+          artifacts: ${{ env.FIRMWARE }}/*.tgz
 
       - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
-        if: steps.tag.outputs.status == 'success' && !cancelled()
+        if: steps.release.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
