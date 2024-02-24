@@ -5,7 +5,7 @@ Thanks to：<br>
 | --------------- | --------------- | --------------- |
 | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Unleashed.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Xtreme.yml)  |
 
-Daily update Firmware, no matter whether the source code changes, Enjoy it!   
+Auto update Firmware, keep up with source code changes, Enjoy it!   
 
 ----
 ## More collective :
