@@ -69,7 +69,7 @@ jobs:
         working-directory: /workdir
         run: |
           df -hT $PWD
-          git clone --recursive $REPO_URL
+          git clone --recursive $GITHUB_URL/$REPO_URL
           ln -sf /workdir/Xtreme-Firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
