@@ -87,7 +87,7 @@ jobs:
 
       - name: 清理Anim
         id: clean
-        if: ${{ env.TIME_HOUR }}!=6 && steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
+        if: steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
         run: |
           shopt -s extglob
           cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
