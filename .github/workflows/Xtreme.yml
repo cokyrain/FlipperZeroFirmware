@@ -34,12 +34,14 @@ jobs:
         run: |
           curl https://api.github.com/repos/$REPO_URL/commits > index.json
           commits_time=$(cat index.json | grep "date" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/\"//g' | sed 's/T/ /g' | sed 's/Z//g')
+          commits_time8=$(date +"%Y-%m-%d %H:%M:%S" -d "@$(($(date +%s -d "$commits_time")+28800))")
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $commits_time  $(date +%s -d "$commits_time")
           echo $(($(date +%s) - $(date +%s -d "$commits_time")))
           if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
             then
               echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
+              echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
               echo "status=success" >> $GITHUB_OUTPUT
           else
               echo "No Update"
@@ -143,29 +145,33 @@ jobs:
           name: ${{ env.GIT_NAME }}-${{ env.FILE_TIME }}
           path: ${{ env.FIRMWARE }}
 
-      - name: 生成ReleaseTag
-        id: tag
+      - name: 上传固件目录
+        uses: actions/upload-artifact@main
         if: steps.organize.outputs.status == 'success' && !cancelled()
-        run: |
-          echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >> $GITHUB_OUTPUT 
-          touch release.txt
-          echo "[源码来源]($GITHUB_URL/$REPO_URL)" >> release.txt
-          echo "status=success" >> $GITHUB_OUTPUT 
-          
-      - name: 上传固件到Release
-        uses: softprops/action-gh-release@v1
-        if: steps.tag.outputs.status == 'success' && !cancelled()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          path: ${{ env.FIRMWARE }}
+
+      - name: 上传Release
+        id: release
+        if: steps.organize.outputs.status == 'success' && !cancelled()
+        uses: ncipollo/release-action@v1
         with:
           name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*.tgz
+          allowUpdates: true
+          tag: ${{ env.FILE_DATE }}-${{ env.GIT_NAME }}
+          commit: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            #### ${{ env.GIT_NAME }} 固件更新：
+            - 源码仓库：[${{ env.REPO_URL }}](${{ env.GITHUB_URL }}/${{ env.REPO_URL }})
+            - 北京时间：${{ env.CODE_TIME8 }}
+            - UTC时间：${{ env.CODE_TIME }}
+          artifacts: ${{ env.FIRMWARE }}/*.tgz
 
       - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
-        if: steps.tag.outputs.status == 'success' && !cancelled()
+        if: steps.release.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
