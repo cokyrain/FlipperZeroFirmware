@@ -86,7 +86,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
           
       - name: 清理Anim
-        if: ${{ env.TIME_HOUR }}!=6 && steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
+        if: steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
         id: clean
         run: |
           shopt -s extglob
@@ -163,7 +163,7 @@ jobs:
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*.tgz
 
-      - name: Delete releases and workflows runs
+      - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
         if: steps.tag.outputs.status == 'success' && !cancelled()
         with:
