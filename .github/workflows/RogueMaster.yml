@@ -28,11 +28,21 @@ jobs:
     steps:
 
       - name: 检查项目分支
+        id: check
         uses: actions/checkout@v3
 
+      - name: 检查库更新情况
+        id: checknew
+        run: |
+          curl https://api.github.com/repos/$REPO_URL > index.json
+          times=$(($(date +%s) - $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)))
+          echo "TIMES=$times" >> $GITHUB_ENV
+
       - name: 编译环境
+        id: environment
         env:
           DEBIAN_FRONTEND: noninteractive
+        if: ${{env.TIMES}} > 10000
         run: |
           sudo timedatectl set-timezone "Asia/Shanghai"
           sudo mkdir -p /workdir
@@ -45,6 +55,7 @@ jobs:
       - name: 下载固件源码
         id: download
         working-directory: /workdir
+        if: steps.environment.outputs.status == 'success' && !cancelled()
         run: |
           df -hT $PWD
           git clone $REPO_URL
@@ -132,7 +143,7 @@ jobs:
         with:
           delete_releases: true
           delete_tags: true
-          releases_keep_latest: 300
+          releases_keep_latest: 3000
           delete_workflows: true
-          workflows_keep_day: 300
+          workflows_keep_day: 3000
           gh_token: ${{ secrets.GH_TOKEN }}
