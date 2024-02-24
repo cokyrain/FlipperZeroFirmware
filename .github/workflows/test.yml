@@ -50,7 +50,7 @@ jobs:
         run: |
           curl https://api.github.com/repos/$REPO_URL > index.json
           echo "TIMES=$(($(date +%s) - $(date +"%s" -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))" >> $GITHUB_ENV
-          echo ${{ env.TIMES }}
+          echo $(($(date +%s) - $(date +"%s" -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
           if [ ${{ env.TIMES }} >18000 ]
             then
               echo "IFNEW=TRUE" >> $GITHUB_ENV
