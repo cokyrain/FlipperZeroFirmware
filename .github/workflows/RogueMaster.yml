@@ -43,7 +43,7 @@ jobs:
         id: environment
         env:
           DEBIAN_FRONTEND: noninteractive
-        #if: ${{env.TIMES}} > 10000 && !cancelled()
+        if: ${{env.TIMES}} > 10000 && !cancelled()
         run: |
           sudo timedatectl set-timezone "Asia/Shanghai"
           sudo mkdir -p /workdir
