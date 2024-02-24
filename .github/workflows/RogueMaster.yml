@@ -41,6 +41,7 @@ jobs:
               echo "status=success" >> $GITHUB_OUTPUT
           else
               echo "IFNEW=FALSE" >> $GITHUB_ENV
+              echo "No Update"
           fi
 
       - name: 检查项目分支
