@@ -14,10 +14,11 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: '35 3,23,5-13/4 * * ?'
+    - cron: '35 3-23/4 * * ?'
 
 env:
-  REPO_URL: https://github.com/Flipper-XFW/Xtreme-Firmware
+  GITHUB_URL: https://github.com/
+  REPO_URL: Flipper-XFW/Xtreme-Firmware
   GIT_NAME: Xtreme
 
 permissions:
@@ -28,10 +29,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: 检查库更新情况
+        id: checknew
+        run: |
+          curl https://api.github.com/repos/$REPO_URL > index.json
+          echo $(date +%s)
+          echo $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")
+          echo $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')")))
+          if [ $(($(date +%s) - $(date +%s -d "$(cat index.json | grep "updated_at" | head -n 1 | sed 's/  "updated_at": "//g' | sed 's/\",//g' | sed 's/Z//g' | sed 's/T/ /g')"))) < 14400 ]
+            then
+              echo "IFNEW=TRUE" >> $GITHUB_ENV
+              echo "status=success" >> $GITHUB_OUTPUT
+          else
+              echo "IFNEW=FALSE" >> $GITHUB_ENV
+          fi
+
       - name: 检查项目分支
-        uses: actions/checkout@v3
+        id: check
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        uses: actions/checkout@v4
 
       - name: 编译环境
+        id: environment
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -45,6 +65,7 @@ jobs:
 
       - name: 下载固件源码
         id: download
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
         working-directory: /workdir
         run: |
           df -hT $PWD
@@ -64,7 +85,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
           
       - name: 清理Anim
-        if: ${{ env.TIME_HOUR }}!=6 && github.event.inputs.anim != 'Anim' && !cancelled()
+        if: ${{ env.TIME_HOUR }}!=6 && steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
         id: clean
         run: |
           shopt -s extglob
@@ -127,7 +148,7 @@ jobs:
         run: |
           echo "release_tag=${{ env.FILE_DATE }}-${{ env.GIT_NAME }}" >> $GITHUB_OUTPUT 
           touch release.txt
-          echo "[源码来源]($REPO_URL)" >> release.txt
+          echo "[源码来源]($GITHUB_URL/$REPO_URL)" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT 
           
       - name: 上传固件到Release
@@ -143,10 +164,11 @@ jobs:
 
       - name: Delete releases and workflows runs
         uses: ophub/delete-releases-workflows@main
+        if: steps.tag.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
-          releases_keep_latest: 300
+          releases_keep_latest: 3000
           delete_workflows: true
-          workflows_keep_day: 300
+          workflows_keep_day: 365
           gh_token: ${{ secrets.GH_TOKEN }}
