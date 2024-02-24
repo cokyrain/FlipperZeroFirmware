@@ -1,5 +1,5 @@
 # Build Flipper Zero Firmware using GitHub Actions
-name: Build RogueMaster
+name: Build RogueMaster Test
 
 on:
   repository_dispatch:
@@ -31,9 +31,9 @@ jobs:
         id: checknew
         run: |
           curl https://api.github.com/repos/$REPO_URL > index.json
-          time1=$(date +%s)
-          time2=$(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)
-          times=$(($(date +%s) - $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') +%s)))
+          time1=$(date '+%s')
+          time2=$(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') '+%s')
+          times=$(($(date '+%s') - $(date -d $(cat index.json | grep "updated_at" | head -n 1 | sed 's/  \"updated_at\": "//g' | sed 's/\",//g' | sed 's/T/-/g' | sed 's/Z//g') '+%s')))
           times2=$(($time1-$time2))
           echo $time1
           echo $time2
