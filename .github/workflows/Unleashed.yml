@@ -143,7 +143,7 @@ jobs:
         with:
           name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
           allowUpdates: true
-          tag: ${{ env.FILE_MONTH }}-${{ env.GIT_NAME }}
+          tag: ${{ env.FILE_DATE }}-${{ env.GIT_NAME }}
           commit: main
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
