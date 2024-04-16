@@ -127,14 +127,16 @@ jobs:
           mv ./base_pack_build/artifacts-base ./base_pack_build/artifacts-extra
           cp -rf ./extra_pack_build/* ./base_pack_build/
           mv ./base_pack_build/artifacts-extra ./base_pack_build/apps
-          #mkdir Flipper/assets/resources/apps/
-          #cp -rf ./extra_pack_build/artifacts-extra/* Flipper/assets/resources/apps/
+          #转移插件
+          mkdir Flipper/assets/resources/apps/
+          cp -rf ./base_pack_build/apps/* Flipper/assets/resources/apps/
+          #重新打包
           cd Flipper/dist/f7-D/
           ls
           rm -rf *.tgz
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #追加插件
-          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar ../../../base_pack_build/*
+          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar Flipper/assets/resources/apps/*
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
