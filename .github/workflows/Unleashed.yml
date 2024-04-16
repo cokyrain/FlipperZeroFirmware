@@ -117,14 +117,24 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
+          #下载插件包文件
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
+          wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-base.tgz
+          #解压插件包文件
           tar zxf all-the-apps-extra.tgz
+          tar zxf all-the-apps-base.tgz
+          #合并插件
+          mv ./base_pack_build/artifacts-base ./base_pack_build/artifacts-extra
+          cp -rf ./extra_pack_build/* ./base_pack_build/
+          mv ./base_pack_build/artifacts-extra ./base_pack_build/apps
           #mkdir Flipper/assets/resources/apps/
           #cp -rf ./extra_pack_build/artifacts-extra/* Flipper/assets/resources/apps/
           cd Flipper/dist/f7-D/
           ls
           rm -rf *.tgz
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          #追加插件
+          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar ../../../base_pack_build/*
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
