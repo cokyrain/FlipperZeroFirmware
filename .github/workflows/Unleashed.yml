@@ -38,7 +38,7 @@ jobs:
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $commits_time  $(date +%s -d "$commits_time")
           echo $(($(date +%s) - $(date +%s -d "$commits_time")))
-          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 1440000 ]
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
             then
               echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
               echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
@@ -137,8 +137,10 @@ jobs:
           ls
           rm -rf *.tgz
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          #-----------
           #追加apps和apps_data目录
           tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
+          #-----------
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
