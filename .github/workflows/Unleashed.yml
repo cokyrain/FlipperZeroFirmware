@@ -125,21 +125,20 @@ jobs:
           #解压插件包文件
           tar zxf all-the-apps-extra.tgz
           tar zxf all-the-apps-base.tgz
-          #合并插件
+          #目录更改名称
           mv ./base_pack_build/artifacts-base ./base_pack_build/apps
           mv ./extra_pack_build/artifacts-extra ./extra_pack_build/apps
-          #复制到新文件夹
-          mkdir sdcard
-          cp -rf ./base_pack_build/* ./sdcard/
+          #复制到上级目录
+          cp -rf ./base_pack_build/* ./
           rm -rf ./base_pack_build
-          cp -rf ./extra_pack_build/* ./sdcard/
+          cp -rf ./extra_pack_build/* ./
           rm -rf ./extra_pack_build
           #-----------
           ls
           rm -rf *.tgz
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          #追加插件
-          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar ./sdcard/*
+          #追加apps和apps_data目录
+          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar ./apps ./apps_data
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
