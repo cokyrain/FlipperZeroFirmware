@@ -117,6 +117,8 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
+          cd Flipper/dist/f7-D/
+          #-----------
           #下载插件包文件
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-base.tgz
@@ -124,19 +126,20 @@ jobs:
           tar zxf all-the-apps-extra.tgz
           tar zxf all-the-apps-base.tgz
           #合并插件
-          mv ./base_pack_build/artifacts-base ./base_pack_build/artifacts-extra
-          cp -rf ./extra_pack_build/* ./base_pack_build/
-          mv ./base_pack_build/artifacts-extra ./base_pack_build/apps
-          #转移插件
-          mkdir Flipper/assets/resources/apps/
-          cp -rf ./base_pack_build/apps/* Flipper/assets/resources/apps/
-          #重新打包
-          cd Flipper/dist/f7-D/
+          mv ./base_pack_build/artifacts-base ./base_pack_build/apps
+          mv ./extra_pack_build/artifacts-extra ./extra_pack_build/apps
+          #复制到新文件夹
+          mkdir sdcard
+          cp -rf ./base_pack_build/* ./sdcard/
+          rm -rf ./base_pack_build
+          cp -rf ./extra_pack_build/* ./sdcard/
+          rm -rf ./extra_pack_build
+          #-----------
           ls
           rm -rf *.tgz
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #追加插件
-          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar Flipper/assets/resources/apps/*
+          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar ./sdcard/*
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
