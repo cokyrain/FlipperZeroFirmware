@@ -137,8 +137,8 @@ jobs:
           #-----------
           ls
           rm -rf *.tgz
-          #mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #-----------
           #追加apps和apps_data目录
           tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
