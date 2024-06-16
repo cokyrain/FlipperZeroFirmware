@@ -38,7 +38,7 @@ jobs:
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $commits_time  $(date +%s -d "$commits_time")
           echo $(($(date +%s) - $(date +%s -d "$commits_time")))
-          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 1440000 ]
             then
               echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
               echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
@@ -106,8 +106,8 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          ./fbt
-          #./fbt updater_package
+          #./fbt
+          ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
