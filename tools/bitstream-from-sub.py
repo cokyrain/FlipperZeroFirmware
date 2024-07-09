@@ -30,7 +30,7 @@ with open(filename, 'r') as f:
     for line in f:
         m = re.match(r'RAW_Data:\s*([-0-9 ]+)\s*$', line)
         if m:
-            segs.extend([normalize(int(seg)) for seg in m[1].split(r' ')])
+            segs.extend([normalize(int(seg)) for seg in m[1].strip().split(r' ')])
 
 full = []
 for seg in segs:
