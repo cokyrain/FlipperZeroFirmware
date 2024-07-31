@@ -73,7 +73,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone $GITHUB_URL/$REPO_URL
-          ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
+          ln -sf /workdir/Momentum-Firmware $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 默认配置
@@ -81,8 +81,8 @@ jobs:
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
           sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/targets/f7/furi_hal/furi_hal_region.c
-          sed -i 's/false/true/g' Flipper/applications/main/subghz/resources/subghz/assets/extend_range.txt
-          cp ./files/setting_user.txt Flipper/applications/main/subghz/resources/subghz/assets/
+          #sed -i 's/false/true/g' Flipper/applications/main/subghz/resources/subghz/assets/extend_range.txt
+          #cp ./files/setting_user.txt Flipper/applications/main/subghz/resources/subghz/assets/
           #sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
           sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
           #sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
@@ -95,10 +95,7 @@ jobs:
         run: |
           shopt -s extglob
           rm -rf Flipper/assets/dolphin/external/*
-          cp ./files/frame_0.png Flipper/assets/dolphin/external/L1_Noanim_128x50/
-          cp ./files/meta.txt Flipper/assets/dolphin/external/L1_Noanim_128x50/
-          sed -i '4s/L1_Tv_128x47/L1_Noanim_128x50/' Flipper/assets/dolphin/external/
-          sed -i '10,$d' Flipper/assets/dolphin/external/
+          cp -r ./files/dolphin/. Flipper/assets/dolphin/external
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
       - name: 编译固件
