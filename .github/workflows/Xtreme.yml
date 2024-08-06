@@ -13,8 +13,8 @@ on:
         options: 
         - 'NoAnim'
         - 'Anim'
-  schedule:
-    - cron: '35 3-23/4 * * ?'
+  #schedule:
+  #  - cron: '35 3-23/4 * * ?'
 
 env:
   GITHUB_URL: https://github.com/
