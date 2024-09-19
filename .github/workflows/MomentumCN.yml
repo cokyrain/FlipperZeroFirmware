@@ -17,7 +17,7 @@ on:
 
 env:
   GITHUB_URL: https://github.com/
-  REPO_URL: Next-Flip/Momentum-Firmware
+  REPO_URL: kalicyh/Momentum-Firmware
   GIT_NAME: MomentumCN
 
 permissions:
