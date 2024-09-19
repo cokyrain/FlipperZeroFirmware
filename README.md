@@ -1,9 +1,9 @@
 # <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/ba2cf4101bf029d2ada26da2f95121de74581a4d/svg/cn.svg" height="30" width="45"> Auto Compile Firmware for Flipper Zero 
 
 Thanks to：<br>
-| [RogueMaster](https://github.com/RogueMaster/flipperzero-firmware-wPlugins)  | [Momentum](https://github.com/Next-Flip/Momentum-Firmware) | [Unleashed](https://github.com/DarkFlippers/unleashed-firmware) |
-| --------------- | --------------- | --------------- |
-| ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Momentum.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Unleashed.yml)  |
+| [RogueMaster](https://github.com/RogueMaster/flipperzero-firmware-wPlugins)  | [Momentum](https://github.com/Next-Flip/Momentum-Firmware) | [Motm中文](https://github.com//kalicyh/Momentum-Firmware) | [Unleashed](https://github.com/DarkFlippers/unleashed-firmware) |
+| --------------- | --------------- | --------------- | --------------- |
+| ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Momentum.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/MomentumCN.yml)  |  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Unleashed.yml)  |
 
 Auto update Firmware, keep up with source code changes, Enjoy it!   
 
