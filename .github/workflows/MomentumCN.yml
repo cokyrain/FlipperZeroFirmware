@@ -1,0 +1,157 @@
+name: Build MomentumCN
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      anim:
+        required: false
+        default: 'NoAnim'
+        type: choice
+        description: Need Anim ?
+        options: 
+        - 'NoAnim'
+        - 'Anim'
+  schedule:
+    - cron: '35 3-23/4 * * ?'
+
+env:
+  GITHUB_URL: https://github.com/
+  REPO_URL: Next-Flip/Momentum-Firmware
+  GIT_NAME: MomentumCN
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 检查库更新情况
+        id: checknew
+        run: |
+          curl https://api.github.com/repos/$REPO_URL/commits > index.json
+          commits_time=$(cat index.json | grep "\"date\"" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/Z\"//g' | sed 's/T/ /g')
+          commits_time8=$(date +"%Y-%m-%d %H:%M:%S" -d "@$(($(date +%s -d "$commits_time")+28800))")
+          echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
+          echo $commits_time  $(date +%s -d "$commits_time")
+          echo $(($(date +%s) - $(date +%s -d "$commits_time")))
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
+            then
+              echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
+              echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
+              echo "status=success" >> $GITHUB_OUTPUT
+          else
+              echo "No Update"
+          fi
+
+      - name: 检查项目分支
+        id: check
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        uses: actions/checkout@v4
+
+      - name: 编译环境
+        id: environment
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          sudo mkdir -p /workdir
+          sudo chown $USER:$GROUPS /workdir
+          echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
+          echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
+          echo "FILE_MONTH=$(date "+%Y%m")" >> $GITHUB_ENV
+          echo "TIME_HOUR=$(date "+%k")" >> $GITHUB_ENV
+          echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
+
+      - name: 下载固件源码
+        id: download
+        working-directory: /workdir
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        run: |
+          df -hT $PWD
+          git clone $GITHUB_URL/$REPO_URL
+          ln -sf /workdir/Momentum-Firmware $GITHUB_WORKSPACE/Flipper
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 默认配置
+        id: setting
+        if: steps.download.outputs.status == 'success' && !cancelled()
+        run: |
+          sed -i 's/power_limit = 12/power_limit = 12/g' Flipper/targets/f7/furi_hal/furi_hal_region.c
+          #sed -i 's/false/true/g' Flipper/applications/main/subghz/resources/subghz/assets/extend_range.txt
+          #cp ./files/setting_user.txt Flipper/applications/main/subghz/resources/subghz/assets/
+          #sed -i 's/430000000/430000000,430500000/g' Flipper/lib/subghz/subghz_setting.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/lib/subghz/subghz_setting.c
+          #sed -i 's/430000000/430000000,430500000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          sed -i 's/431500000/431500000,432800000/g' Flipper/applications/main/subghz/views/subghz_frequency_analyzer.c
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 清理Anim
+        id: clean
+        if: steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
+        run: |
+          shopt -s extglob
+          rm -rf Flipper/assets/dolphin/external/*
+          cp -r ./files/dolphin/. Flipper/assets/dolphin/external
+          echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
+
+      - name: 编译固件
+        id: compile
+        if: steps.setting.outputs.status == 'success' && !cancelled()
+        run: |
+          cd Flipper/
+          ./fbt updater_package
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 检查磁盘使用情况
+        if: steps.compile.outputs.status == 'success' && !cancelled()
+        run: df -hT
+
+      - name: 组织文件
+        id: organize
+        if: steps.compile.outputs.status == 'success' && !cancelled()
+        run: |
+          cd Flipper/dist/f7-C/
+          rm -rf *.tgz
+          mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 上传固件目录
+        uses: actions/upload-artifact@main
+        if: steps.organize.outputs.status == 'success' && !cancelled()
+        with:
+          name: ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          path: ${{ env.FIRMWARE }}
+
+      - name: 上传Release
+        id: release
+        if: steps.organize.outputs.status == 'success' && !cancelled()
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
+          allowUpdates: true
+          tag: ${{ env.FILE_DATE }}-${{ env.GIT_NAME }}
+          commit: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            #### ${{ env.GIT_NAME }} 固件更新：
+            - 源码仓库：[${{ env.REPO_URL }}](${{ env.GITHUB_URL }}/${{ env.REPO_URL }})
+            - 北京时间：${{ env.CODE_TIME8 }}
+            - UTC时间：${{ env.CODE_TIME }}
+          artifacts: ${{ env.FIRMWARE }}/*.tgz
+
+      - name: 删除旧的releases和workflows runs
+        uses: ophub/delete-releases-workflows@main
+        if: steps.release.outputs.status == 'success' && !cancelled()
+        with:
+          delete_releases: true
+          delete_tags: true
+          releases_keep_latest: 3000
+          delete_workflows: true
+          workflows_keep_day: 365
+          gh_token: ${{ secrets.GH_TOKEN }}
