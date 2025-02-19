@@ -115,7 +115,7 @@ jobs:
 
       - name: 组织文件
         id: organize
-        if: steps.compile.outputs.status == '1122' && steps.compile.outputs.status == 'success' && !cancelled()
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/dist/f7-D/
           #-----------
@@ -140,7 +140,8 @@ jobs:
           #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #-----------
           #追加apps和apps_data目录
-          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
+          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps
+          #apps_data
           #-----------
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
