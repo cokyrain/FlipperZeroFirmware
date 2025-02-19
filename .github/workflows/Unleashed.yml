@@ -1,4 +1,3 @@
-# Build Flipper Zero Firmware using GitHub Actions
 name: Build Unleashed
 
 on:
@@ -33,7 +32,7 @@ jobs:
         id: checknew
         run: |
           curl https://api.github.com/repos/$REPO_URL/commits > index.json
-          commits_time=$(cat index.json | grep "date" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/\"//g' | sed 's/T/ /g' | sed 's/Z//g')
+          commits_time=$(cat index.json | grep "\"date\"" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/\"//g' | sed 's/T/ /g' | sed 's/Z//g')
           commits_time8=$(date +"%Y-%m-%d %H:%M:%S" -d "@$(($(date +%s -d "$commits_time")+28800))")
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $commits_time  $(date +%s -d "$commits_time")
