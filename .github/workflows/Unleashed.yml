@@ -105,8 +105,8 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          #./fbt COMPACT=1 DEBUG=0 FBT_NO_SYNC=0
-          ./fbt updater_package
+          ./fbt COMPACT=1 DEBUG=0 FBT_NO_SYNC=0
+          #./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
@@ -117,8 +117,8 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
-          cd Flipper/dist/f7-D/
-          #cd Flipper/dist/f7-C/
+          #cd Flipper/dist/f7-D/
+          cd Flipper/dist/f7-C/
           #-----------
           #下载插件包文件
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
