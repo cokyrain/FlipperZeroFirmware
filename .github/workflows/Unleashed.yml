@@ -115,7 +115,7 @@ jobs:
 
       - name: 组织文件
         id: organize
-        if: steps.compile.outputs.status == 'success' && !cancelled()
+        if: steps.compile.outputs.status == '1122' && steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/dist/f7-D/
           #-----------
