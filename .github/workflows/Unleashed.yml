@@ -105,7 +105,7 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          ./fbt COMPACT=1 DEBUG=0 FBT_NO_SYNC=0
+          ./fbt.cmd COMPACT=1 DEBUG=0 updater_package
           #./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
