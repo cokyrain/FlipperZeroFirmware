@@ -105,8 +105,8 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          ./fbt COMPACT=1 DEBUG=0 FBT_NO_SYNC=0
-          #./fbt updater_package
+          #./fbt COMPACT=1 DEBUG=0 FBT_NO_SYNC=0
+          ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
@@ -143,7 +143,7 @@ jobs:
           #追加apps和apps_data目录
           tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
           #-----------
-          #tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
