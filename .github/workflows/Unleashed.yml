@@ -136,9 +136,15 @@ jobs:
           rm -rf ./extra_pack_build
           #-----------
           ls
-          rm -rf *.tgz
+          #复制有用文件
           #mv flipper-z-f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          mv /f7-update-* /${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          #清理无用文件
+          rm -rf *.tgz
+          rm -rf *.zip
+
+          rm -rf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/*.ths"
           #-----------
           #追加apps和apps_data目录
           tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
