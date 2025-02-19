@@ -140,8 +140,7 @@ jobs:
           #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #-----------
           #追加apps和apps_data目录
-          tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps
-          #apps_data
+          #tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
           #-----------
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
