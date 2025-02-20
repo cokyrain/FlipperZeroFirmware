@@ -134,22 +134,21 @@ jobs:
           rm -rf ./base_pack_build
           cp -rf ./extra_pack_build/* ./
           rm -rf ./extra_pack_build
-          #-----------
           ls
           #复制有用文件
           #mv flipper-z-f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理无用文件
-          rm -rf *.tgz
-          rm -rf *.zip
-
-          rm -rf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/*.ths"
-          #-----------
+          #rm -rf *.tgz
+          rm -r *.zip
+          rm -r ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/*.ths
           #追加apps和apps_data目录
           tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
-          #-----------
+          #压缩文件
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          #清理文件夹
+          rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }} app apps_data
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
