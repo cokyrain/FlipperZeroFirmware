@@ -115,9 +115,10 @@ jobs:
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/dist/f7-C/
-          rm -rf *.tgz
+          rm -rf *.tgz *.zip
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
@@ -147,7 +148,7 @@ jobs:
 
       - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
-        if: steps.release.outputs.status == 'success' && !cancelled()
+        if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
