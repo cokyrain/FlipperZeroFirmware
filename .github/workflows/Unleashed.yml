@@ -138,7 +138,7 @@ jobs:
           ls
           #复制有用文件
           #mv flipper-z-f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          mv /f7-update-* /${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理无用文件
           rm -rf *.tgz
