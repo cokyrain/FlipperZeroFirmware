@@ -37,7 +37,7 @@ jobs:
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $commits_time  $(date +%s -d "$commits_time")
           echo $(($(date +%s) - $(date +%s -d "$commits_time")))
-          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 1440000 ]
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
             then
               echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
               echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
@@ -126,7 +126,7 @@ jobs:
           #解压插件包文件
           tar zxf all-the-apps-extra.tgz
           tar zxf all-the-apps-base.tgz
-          #目录更改名称
+          #更改目录名称
           mv ./base_pack_build/artifacts-base ./base_pack_build/apps
           mv ./extra_pack_build/artifacts-extra ./extra_pack_build/apps
           #复制到上级目录
@@ -140,7 +140,7 @@ jobs:
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理无用文件
-          #rm -rf *.tgz
+          rm -rf *.tgz
           rm -r *.zip
           rm -r ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/*.ths
           #追加apps和apps_data目录
@@ -148,7 +148,7 @@ jobs:
           #压缩文件
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理文件夹
-          rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }} app apps_data
+          rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }} apps apps_data
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
