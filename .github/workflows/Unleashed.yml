@@ -178,7 +178,7 @@ jobs:
 
       - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
-        if: steps.release.outputs.status == 'success' && !cancelled()
+        if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
           delete_releases: true
           delete_tags: true
