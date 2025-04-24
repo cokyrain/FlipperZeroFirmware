@@ -22,7 +22,7 @@ Auto update Firmware, keep up with source code changes, Enjoy it!
 
 ----
 ## Stargazers over time
-[![Stargazers](https://starchart.cc/cokyrain/FlipperZeroFirmware.svg)](https://starchart.cc/cokyrain/FlipperZeroFirmware)
+[![Stargazers over time](https://starchart.cc/cokyrain/FlipperZeroFirmware.svg?variant=adaptive)](https://starchart.cc/cokyrain/FlipperZeroFirmware)
 ----
 
 
