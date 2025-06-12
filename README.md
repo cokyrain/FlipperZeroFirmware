@@ -1,9 +1,10 @@
 # <img src="https://raw.githubusercontent.com/hampusborgos/country-flags/ba2cf4101bf029d2ada26da2f95121de74581a4d/svg/cn.svg" height="30" width="45"> Auto Compile Firmware for Flipper Zero 
 
 Thanks to：<br>
-| [RogueMaster](https://github.com/RogueMaster/flipperzero-firmware-wPlugins)  | [Momentum](https://github.com/Next-Flip/Momentum-Firmware)  | [Unleashed](https://github.com/DarkFlippers/unleashed-firmware) | [Mntm中文](https://github.com//kalicyh/Momentum-Firmware)|
+| [RogueMaster](https://github.com/RogueMaster/flipperzero-firmware-wPlugins)  | [Momentum](https://github.com/Next-Flip/Momentum-Firmware)  | [Unleashed](https://github.com/DarkFlippers/unleashed-firmware) | [Mntm中文](https://github.com/kalicyh/Momentum-Firmware)|
 | --------------- | --------------- | --------------- | --------------- |
-| ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml)  | ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Momentum.yml)  |  ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Unleashed.yml)  | Stop updating |
+| ![GitHub last commit](https://img.shields.io/github/last-commit/RogueMaster/flipperzero-firmware-wPlugins?label) | ![GitHub last commit](https://img.shields.io/github/last-commit/Next-Flip/Momentum-Firmware?label) | ![GitHub last commit](https://img.shields.io/github/last-commit/DarkFlippers/unleashed-firmware?label) | ![GitHub last commit](https://img.shields.io/github/last-commit/kalicyh/Momentum-Firmware?label) |
+| ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/RogueMaster.yml?label)  | ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Momentum.yml?label)  |  ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/cokyrain/FlipperZeroFirmware/Unleashed.yml?label)  | Pause |
 
 Auto update Firmware, keep up with source code changes, Enjoy it!   
 
