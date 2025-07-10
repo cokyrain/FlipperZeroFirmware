@@ -37,7 +37,8 @@ jobs:
           echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
           echo $commits_time  $(date +%s -d "$commits_time")
           echo $(($(date +%s) - $(date +%s -d "$commits_time")))
-          if [ $(($(date +%s) - $(date +%s -d "$commits_time"))) -le 14400 ]
+          RUNWAY=${{ github.event_name == 'workflow_dispatch' && 864000 || 0 }}
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time") +RUNWAY)) -le 14400 ]
             then
               echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
               echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
