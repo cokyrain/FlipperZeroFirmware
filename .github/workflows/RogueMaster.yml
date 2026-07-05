@@ -13,7 +13,7 @@ on:
         - 'NoAnim'
         - 'Anim'
   schedule:
-    - cron: '35 3-23/4 * * ?'
+    - cron: '35 3-23/4 * * *'
 
 env:
   GITHUB_URL: https://github.com/
@@ -74,7 +74,7 @@ jobs:
         if: steps.checknew.outputs.status == 'success' && !cancelled()
         run: |
           df -hT $PWD
-          git clone $GITHUB_URL/$REPO_URL
+          git clone --recurse-submodules --depth=0 $GITHUB_URL/$REPO_URL
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
