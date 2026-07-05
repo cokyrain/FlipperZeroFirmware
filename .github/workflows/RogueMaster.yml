@@ -96,10 +96,13 @@ jobs:
         if: steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
         run: |
           shopt -s extglob
-          rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64
-          sed -i 's/^Name: .*/Name: MjK_blank_128x64/' Flipper/assets/dolphin/external/manifest.txt
-          rm -rf Flipper/assets/packs/RM
-          #cp Flipper/assets/dolphin/external/MjK_blank_128x64/*.* Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.*
+          rm -rf Flipper/assets/dolphin/external/wrenchathome_F0Pattern_128x64/*.*
+          rm -rf Flipper/assets/packs/RM/Anims/*
+          cp -r Flipper/assets/dolphin/internal/MjK_blank_128x64/* Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          cp -r ./files/Anims/wrenchathome_F0Pattern_128x64/* Flipper/assets/dolphin/external/wrenchathome_F0Pattern_128x64/
+          cp -r ./files/Anims/* Flipper/assets/packs/RM/Anims/
+          #sed -i 's/^Name: .*/Name: MjK_blank_128x64/' Flipper/assets/dolphin/external/manifest.txt
           #cp ./files/meta.txt Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           #rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.png
           #cp ./files/frame_0.png Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
