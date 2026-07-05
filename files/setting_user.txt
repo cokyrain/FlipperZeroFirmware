@@ -14,8 +14,6 @@ Default_frequency: 431500000
 # Frequencies used for hopping mode (keep this list small or flipper will miss signal)
 Hopper_frequency: 310000000
 Hopper_frequency: 315000000
-Hopper_frequency: 350000000
-Hopper_frequency: 390000000
 Hopper_frequency: 418000000
 Hopper_frequency: 430000000
 Hopper_frequency: 430500000
