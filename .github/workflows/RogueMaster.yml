@@ -76,7 +76,7 @@ jobs:
           df -hT $PWD
           git clone --recurse-submodules $GITHUB_URL/$REPO_URL
           cd flipperzero-firmware-wPlugins
-          git fetch --tags --force
+          git submodule foreach --recursive 'git fetch --tags --force || true'
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
