@@ -5,7 +5,7 @@ Version: 1
 Add_standard_frequencies: true
 
 # Default Frequency: used as default for "Read" and "Read Raw"
-Default_frequency: 431500000
+Default_frequency: 433920000
 
 # Frequencies used for "Read", "Read Raw" and "Frequency Analyzer"
 #Frequency: 432800000
@@ -19,7 +19,7 @@ Hopper_frequency: 430000000
 Hopper_frequency: 430500000
 Hopper_frequency: 431500000
 Hopper_frequency: 432800000
-Hopper_frequency: 433920000 
+Hopper_frequency: 433920000
 
 
 # Custom preset examples
