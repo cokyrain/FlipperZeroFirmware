@@ -74,7 +74,9 @@ jobs:
         if: steps.checknew.outputs.status == 'success' && !cancelled()
         run: |
           df -hT $PWD
-          git clone --recurse-submodules --depth=0 $GITHUB_URL/$REPO_URL
+          git clone --recurse-submodules $GITHUB_URL/$REPO_URL
+          cd flipperzero-firmware-wPlugins
+          git fetch --tags --force
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
