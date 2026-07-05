@@ -99,7 +99,7 @@ jobs:
           rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.*
           rm -rf Flipper/assets/dolphin/external/wrenchathome_F0Pattern_128x64/*.*
           rm -rf Flipper/assets/packs/RM/Anims/*
-          cp -r Flipper/assets/dolphin/internal/MjK_blank_128x64/* Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
+          cp -r ./files/Anims/wrenchathome_F0Pattern_128x64/* Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/
           cp -r ./files/Anims/wrenchathome_F0Pattern_128x64/* Flipper/assets/dolphin/external/wrenchathome_F0Pattern_128x64/
           cp -r ./files/Anims/* Flipper/assets/packs/RM/Anims/
           #sed -i 's/^Name: .*/Name: MjK_blank_128x64/' Flipper/assets/dolphin/external/manifest.txt
