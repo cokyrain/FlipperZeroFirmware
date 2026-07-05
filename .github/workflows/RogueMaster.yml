@@ -74,10 +74,10 @@ jobs:
         if: steps.checknew.outputs.status == 'success' && !cancelled()
         run: |
           df -hT $PWD
-          git clone --recurse-submodules $GITHUB_URL/$REPO_URL
-          cd flipperzero-firmware-wPlugins
-          rm -rf assets/protobuf
-          git clone https://github.com/RogueMaster/flipperzero-protobuf assets/protobuf
+          git clone --recursive --jobs 8 $GITHUB_URL/$REPO_URL
+          #cd flipperzero-firmware-wPlugins
+          #rm -rf assets/protobuf
+          #git clone https://github.com/RogueMaster/flipperzero-protobuf assets/protobuf
           ln -sf /workdir/flipperzero-firmware-wPlugins $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
