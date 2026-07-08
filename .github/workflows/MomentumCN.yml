@@ -51,7 +51,7 @@ jobs:
       - name: 检查项目分支
         id: check
         if: steps.checknew.outputs.status == 'success' && !cancelled()
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 编译环境
         id: environment
