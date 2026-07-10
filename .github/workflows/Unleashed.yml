@@ -142,9 +142,9 @@ jobs:
         if: (!cancelled())
         run: df -hT
 
-      - name: 追加tgz资源文件
+      - name: 替换追加tgz资源文件
         id: addfile
-        if: steps.compile.outputs.status == 'success' && !cancelled() && steps.compile.outputs.status == 'false'
+        if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
           #cd Flipper/dist/f7-D/
           cd Flipper/dist/f7-C/
@@ -197,7 +197,7 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
-      - name: 上传固件目录
+      - name: 上传固件编译目录
         uses: actions/upload-artifact@main
         if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
