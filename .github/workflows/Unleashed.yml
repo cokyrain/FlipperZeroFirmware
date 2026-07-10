@@ -98,8 +98,10 @@ jobs:
           cp ./files/meta.txt Flipper/assets/dolphin/internal/L1_Tv_128x47/
           rm Flipper/assets/dolphin/internal/L1_Tv_128x47/*.png
           cp ./files/frame_0.png Flipper/assets/dolphin/internal/L1_Tv_128x47/
-          rm -rf Flipper/assets/dolphin/external/!("manifest.txt")
-          sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
+          #rm -rf Flipper/assets/dolphin/external/!("manifest.txt")
+          #sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
+          rm -rf Flipper/assets/dolphin/external/*
+          cp ./files/Anims/* Flipper/assets/dolphin/external/
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
       - name: 集成插件
