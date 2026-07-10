@@ -122,7 +122,7 @@ jobs:
           cp -R extra_pack_build/artifacts-extra/* Flipper/applications/main/clock_app/resources/apps/
           rm -rf extra_pack_build all-the-apps-extra.tgz
           # ====== 3. 清除版本缓存======
-          rm -f build/f7-firmware-C/toolbox/version.*
+          rm -f Flipper/build/f7-firmware-C/toolbox/version.*
           echo "DIST_SUFFIX=${{ env.FILE_NAME }}-${{ env.FILE_TIME }}" >> $GITHUB_ENV
           echo "WORKFLOW_BRANCH_OR_TAG=release-cfw" >> $GITHUB_ENV
           echo "FORCE_NO_DIRTY=yes" >> $GITHUB_ENV
@@ -190,7 +190,7 @@ jobs:
           ls -l
           #修改文件名称
           #mv flipper-z-f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          mv flipper-*.tgz "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}*.tgz"
+          mv flipper*.tgz "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
