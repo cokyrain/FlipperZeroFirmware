@@ -97,7 +97,7 @@ jobs:
         run: |
           shopt -s extglob
           rm -rf Flipper/assets/dolphin/external/*
-          cp -r ./files/dolphin/. Flipper/assets/dolphin/external
+          cp -r ./files/dolphin/. Flipper/assets/dolphin/external/
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
       - name: 编译固件
