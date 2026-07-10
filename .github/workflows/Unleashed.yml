@@ -142,7 +142,7 @@ jobs:
         if: (!cancelled())
         run: df -hT
 
-      - name: 追加文件
+      - name: 追加tgz资源文件
         id: addfile
         if: steps.compile.outputs.status == 'success' && !cancelled() && steps.compile.outputs.status == 'false'
         run: |
@@ -154,14 +154,16 @@ jobs:
           wget -c https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-base.tgz
           #解压插件包文件
           tar zxf all-the-apps-extra.tgz
+          rm -rf ./all-the-apps-extra.tgz
           tar zxf all-the-apps-base.tgz
+          rm -rf ./all-the-apps-base.tgz
           #更改目录名称
           mv ./base_pack_build/artifacts-base ./base_pack_build/apps
           mv ./extra_pack_build/artifacts-extra ./extra_pack_build/apps
           #复制到上级目录
-          cp -rf ./base_pack_build/* ./
+          cp -rf ./base_pack_build/. ./
           rm -rf ./base_pack_build
-          cp -rf ./extra_pack_build/* ./
+          cp -rf ./extra_pack_build/. ./
           rm -rf ./extra_pack_build
           ls
           #复制有用文件
@@ -169,13 +171,14 @@ jobs:
           mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #mkdir "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理无用文件
-          rm -rf *.tgz
-          rm -r *.zip
+          #rm -rf *.tgz
+          #rm -r *.zip
           rm -r ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/*.ths
           #追加apps和apps_data目录
           tar -rvf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}/resources.tar apps apps_data
+          rm -rf ./apps ./apps_data
           #压缩文件
-          tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}-res.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理文件夹
           rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }} apps apps_data
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
