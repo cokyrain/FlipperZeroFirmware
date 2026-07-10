@@ -102,9 +102,34 @@ jobs:
           sed -i '1,2!d' Flipper/assets/dolphin/external/manifest.txt
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
+      - name: 集成插件
+        id: plugins
+        if: steps.setting.outputs.status == 'success' && !cancelled()
+        run: |
+          # ====== 1. 集成 Base 包 ======
+          wget -q https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-base.tgz
+          tar zxf all-the-apps-base.tgz
+          mkdir -p Flipper/applications/main/clock_app/resources/apps
+          mkdir -p Flipper/applications/main/clock_app/resources/apps_data
+          cp -R base_pack_build/artifacts-base/* Flipper/applications/main/clock_app/resources/apps/
+          cp -R base_pack_build/apps_data/* Flipper/applications/main/clock_app/resources/apps_data/
+          rm -rf base_pack_build all-the-apps-base.tgz
+          # ====== 2. 集成 Extra 包======
+          wget -q https://github.com/xMasterX/all-the-plugins/releases/latest/download/all-the-apps-extra.tgz
+          tar zxf all-the-apps-extra.tgz
+          cp -R extra_pack_build/artifacts-extra/* Flipper/applications/main/clock_app/resources/apps/
+          rm -rf extra_pack_build all-the-apps-extra.tgz
+          # ====== 3. 清除版本缓存======
+          rm -f build/f7-firmware-C/toolbox/version.*
+          export DIST_SUFFIX="${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          export WORKFLOW_BRANCH_OR_TAG=release-cfw
+          export FORCE_NO_DIRTY=yes
+          export FBT_GIT_SUBMODULE_SHALLOW=1
+          echo "status=success" >> $GITHUB_OUTPUT
+
       - name: 编译固件
         id: compile
-        if: steps.setting.outputs.status == 'success' && !cancelled()
+        if: steps.plugins.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
           ./fbt COMPACT=1 DEBUG=0 updater_package
@@ -115,9 +140,9 @@ jobs:
         if: (!cancelled())
         run: df -hT
 
-      - name: 组织文件
-        id: organize
-        if: steps.compile.outputs.status == 'success' && !cancelled()
+      - name: 追加文件
+        id: addfile
+        if: steps.compile.outputs.status == 'success' && !cancelled() && steps.compile.outputs.status == 'false'
         run: |
           #cd Flipper/dist/f7-D/
           cd Flipper/dist/f7-C/
@@ -151,6 +176,19 @@ jobs:
           tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           #清理文件夹
           rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }} apps apps_data
+          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 组织文件
+        id: organize
+        if: steps.compile.outputs.status == 'success' && !cancelled()
+        run: |
+          #cd Flipper/dist/f7-D/
+          cd Flipper/dist/f7-C/
+          ls -l
+          #修改文件名称
+          #mv flipper-z-f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          mv flipper--* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
