@@ -105,7 +105,8 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          ./fbt updater_package
+          #./fbt updater_package
+          MOMENTUM_UI_LANG=zh_CN ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
