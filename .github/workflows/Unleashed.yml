@@ -134,8 +134,8 @@ jobs:
         if: steps.plugins.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          ./fbt COMPACT=1 DEBUG=0 updater_package
-          #./fbt updater_package
+          #./fbt COMPACT=1 DEBUG=0 updater_package
+          ./fbt DEBUG=0  updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
