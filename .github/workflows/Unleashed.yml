@@ -188,8 +188,8 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
-          #cd Flipper/dist/f7-D/
-          cd Flipper/dist/f7-C/
+          #cd Flipper/dist/f7-C/
+          cd Flipper/dist/f7*/
           ls -l
           #修改文件名称
           #mv flipper-z-f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
