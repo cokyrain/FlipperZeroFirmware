@@ -99,7 +99,6 @@ jobs:
         if: steps.setting.outputs.status == 'success' && github.event.inputs.anim != 'Anim' && !cancelled()
         run: |
           shopt -s extglob
-          ls -la Flipper/applications/external/air_level/
           rm -rf Flipper/assets/dolphin/internal/wrenchathome_F0Pattern_128x64/*.*
           rm -rf Flipper/assets/dolphin/external/wrenchathome_F0Pattern_128x64/*.*
           rm -rf Flipper/assets/packs/RM/Anims/*
@@ -113,7 +112,6 @@ jobs:
           #rm -rf Flipper/assets/dolphin/external/*
           #rm -rf Flipper/assets/resources/dolphin/*
           #cp ./files/manifest.txt Flipper/assets/dolphin/external/
-          ls -la Flipper/applications/external/air_level/
           
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
