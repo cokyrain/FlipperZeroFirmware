@@ -106,6 +106,7 @@ jobs:
         run: |
           cd Flipper/
           #./fbt updater_package
+          # MOMENTUM_UI_LANG=zh_CN ./fbt COMPACT=1 DEBUG=0
           MOMENTUM_UI_LANG=zh_CN ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
