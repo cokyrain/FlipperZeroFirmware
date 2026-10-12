@@ -120,6 +120,8 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
+          rm -rf applications/external/air_level
+          #临时删除air_level
           ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
