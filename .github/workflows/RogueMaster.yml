@@ -112,6 +112,8 @@ jobs:
           #rm -rf Flipper/assets/dolphin/external/*
           #rm -rf Flipper/assets/resources/dolphin/*
           #cp ./files/manifest.txt Flipper/assets/dolphin/external/
+          ls -la applications/external/air_level/
+          
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
       - name: 编译固件
