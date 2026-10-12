@@ -124,6 +124,8 @@ jobs:
           #临时删除air_level
           ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
+        env:
+          FBT_NO_SYNC: 1
 
       - name: 检查磁盘使用情况
         if: steps.compile.outputs.status == 'success' && !cancelled()
