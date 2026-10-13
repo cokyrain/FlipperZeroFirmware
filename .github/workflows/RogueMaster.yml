@@ -112,7 +112,10 @@ jobs:
           #rm -rf Flipper/assets/dolphin/external/*
           #rm -rf Flipper/assets/resources/dolphin/*
           #cp ./files/manifest.txt Flipper/assets/dolphin/external/
-          
+
+          mkdir -p Flipper/applications/external/hunter_flipper/assets
+          rsync -a --ignore-existing Flipper/applications/external/air_level/assets/.gitkeep Flipper/applications/external/hunter_flipper/assets/
+
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
       - name: 编译固件
@@ -120,8 +123,6 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd Flipper/
-          rm -rf applications/external/air_level
-          #临时删除air_level
           ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
         env:
