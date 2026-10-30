@@ -31,7 +31,7 @@ jobs:
       - name: 检查库更新情况
         id: checknew
         env:
-            RUNWAY: ${{ github.event_name == 'workflow_dispatch' && 864000 || 0 }}
+            RUNWAY: ${{ github.event_name == 'workflow_dispatch' && 8640000 || 0 }}
         run: |
           curl https://api.github.com/repos/$REPO_URL/commits > index.json
           commits_time=$(cat index.json | grep "\"date\"" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/Z\"//g' | sed 's/T/ /g')
