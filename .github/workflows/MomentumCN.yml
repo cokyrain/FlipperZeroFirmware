@@ -75,7 +75,7 @@ jobs:
         run: |
           df -hT $PWD
           git clone $GITHUB_URL/$REPO_URL
-          ln -sf /workdir/Momentum-Firmware $GITHUB_WORKSPACE/Flipper
+          ln -sf /workdir/Momentum-Firmware-CN $GITHUB_WORKSPACE/Flipper
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 默认配置
