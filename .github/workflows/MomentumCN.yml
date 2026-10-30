@@ -100,6 +100,14 @@ jobs:
           cp -r ./files/dolphin/. Flipper/assets/dolphin/external
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
+      - name: 准备Linux版bdfconv
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/olikraus/u8g2.git /tmp/u8g2
+          make -C /tmp/u8g2/tools/font/bdfconv
+          install -m 0755 /tmp/u8g2/tools/font/bdfconv/bdfconv Flipper/tools/u8g2_cn_tools/bdfconv
+          file Flipper/tools/u8g2_cn_tools/bdfconv
+
       - name: 编译固件
         id: compile
         if: steps.setting.outputs.status == 'success' && !cancelled()
