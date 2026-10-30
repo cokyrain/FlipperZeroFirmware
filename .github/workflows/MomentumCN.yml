@@ -107,7 +107,7 @@ jobs:
           cd Flipper/
           #./fbt updater_package
           # MOMENTUM_UI_LANG=zh_CN ./fbt COMPACT=1 DEBUG=0
-          MOMENTUM_UI_LANG=zh_CN ./fbt updater_package
+          MOMENTUM_UI_LANG=zh_CN MOMENTUM_DEVICE=real ./fbt updater_package
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
