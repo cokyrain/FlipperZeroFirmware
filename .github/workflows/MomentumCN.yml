@@ -100,13 +100,9 @@ jobs:
           cp -r ./files/dolphin/. Flipper/assets/dolphin/external
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
-      - name: 诊断 checkout 布局
-        run: |
-          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
-          ls -la "$GITHUB_WORKSPACE"
-          find "$GITHUB_WORKSPACE" -maxdepth 4 $ -name u8g2_cn_tools -o -name 'fbt*' $ | head -20
-
       - name: 准备Linux版bdfconv
+        id: bdfconv
+        if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           set -euo pipefail
           git clone --depth 1 https://github.com/olikraus/u8g2.git /tmp/u8g2
