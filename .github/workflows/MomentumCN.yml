@@ -100,6 +100,12 @@ jobs:
           cp -r ./files/dolphin/. Flipper/assets/dolphin/external
           echo "FILE_NAME=$GIT_NAME-NoAnim" >> $GITHUB_ENV
 
+      - name: 诊断 checkout 布局
+        run: |
+          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+          ls -la "$GITHUB_WORKSPACE"
+          find "$GITHUB_WORKSPACE" -maxdepth 4 $ -name u8g2_cn_tools -o -name 'fbt*' $ | head -20
+
       - name: 准备Linux版bdfconv
         run: |
           set -euo pipefail
