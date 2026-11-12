@@ -100,8 +100,7 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd M1/
-          #git stash
-          ./build.sh --release
+          ./build.sh
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 检查磁盘使用情况
