@@ -100,7 +100,7 @@ jobs:
         if: steps.setting.outputs.status == 'success' && !cancelled()
         run: |
           cd M1/
-          git stash
+          #git stash
           ./build.sh --release
           echo "status=success" >> $GITHUB_OUTPUT
 
