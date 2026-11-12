@@ -17,7 +17,7 @@ on:
 
 env:
   GITHUB_URL: https://github.com/
-  REPO_URL: Monstatek/M1
+  REPO_URL: cokyrain/M1
   GIT_NAME: MonstatekM1
 
 permissions:
@@ -88,8 +88,8 @@ jobs:
         id: setting
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
-          cp M1/m1_csrc/Res_String.c M1/m1_csrc/res_string.c
-          cp M1/m1_csrc/Res_String.h M1/m1_csrc/res_string.h
+          #cp M1/m1_csrc/Res_String.c M1/m1_csrc/res_string.c
+          #cp M1/m1_csrc/Res_String.h M1/m1_csrc/res_string.h
           sed -i 's|return 1; /\* not allowed \*/|return 0; /* not allowed */|' M1/m1_csrc/m1_sub_ghz.c
           sed -i 's|^\([[:space:]]*\)ret = 1;|\1ret = 0;|' M1/m1_csrc/m1_sub_ghz.c
           sed -i 's|{ 925000000UL, "925.000" },|&\n\t{ 430000000UL, "430.000" },|' M1/m1_csrc/m1_sub_ghz.c
