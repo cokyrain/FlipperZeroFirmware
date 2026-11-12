@@ -1,0 +1,155 @@
+name: Build MonstaTek-M1
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      anim:
+        required: false
+        default: 'NoAnim'
+        type: choice
+        description: Need Anim ?
+        options: 
+        - 'NoAnim'
+        - 'Anim'
+  schedule:
+    - cron: '35 3-23/4 * * *'
+
+env:
+  GITHUB_URL: https://github.com/
+  REPO_URL: Monstatek/M1
+  GIT_NAME: MonstatekM1
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 检查库更新情况
+        id: checknew
+        env:
+            RUNWAY: ${{ github.event_name == 'workflow_dispatch' && 864000 || 0 }}
+        run: |
+          curl https://api.github.com/repos/$REPO_URL/commits > index.json
+          commits_time=$(cat index.json | grep "\"date\"" | sed -n "2p" | sed 's/        \"date\": \"//g' | sed 's/Z\"//g' | sed 's/T/ /g')
+          commits_time8=$(date +"%Y-%m-%d %H:%M:%S" -d "@$(($(date +%s -d "$commits_time")+28800))")
+          echo $(date +"%Y-%m-%d %H:%M:%S")  $(date +%s)
+          echo $commits_time  $(date +%s -d "$commits_time")
+          echo $(($(date +%s) - $(date +%s -d "$commits_time")))
+          if [ $(($(date +%s) - $(date +%s -d "$commits_time") - RUNWAY)) -le 14400 ]
+            then
+              echo "CODE_TIME=$commits_time" >> $GITHUB_ENV
+              echo "CODE_TIME8=$commits_time8" >> $GITHUB_ENV
+              echo "status=success" >> $GITHUB_OUTPUT
+          else
+              echo "No Update"
+          fi
+
+      - name: 检查项目分支
+        id: check
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        uses: actions/checkout@v7
+
+      - name: 编译环境
+        id: environment
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          sudo mkdir -p /workdir
+          sudo chown $USER:$GROUPS /workdir
+          sudo apt install cmake ninja-build srecord
+          wget https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz
+          sudo tar xf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz -C /opt/
+          echo 'export PATH=/opt/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin:$PATH' >> ~/.bashrc
+          source ~/.bashrc
+          echo "FILE_TIME=$(date "+%Y%m%d-%H%M")" >> $GITHUB_ENV
+          echo "FILE_DATE=$(date "+%Y%m%d")" >> $GITHUB_ENV
+          echo "FILE_MONTH=$(date "+%Y%m")" >> $GITHUB_ENV
+          echo "TIME_HOUR=$(date "+%k")" >> $GITHUB_ENV
+          echo "FILE_NAME=$GIT_NAME" >> $GITHUB_ENV
+
+      - name: 下载固件源码
+        id: download
+        working-directory: /workdir
+        if: steps.checknew.outputs.status == 'success' && !cancelled()
+        run: |
+          df -hT $PWD
+          git clone $GITHUB_URL/$REPO_URL
+          ln -sf /workdir/M1 $GITHUB_WORKSPACE/M1
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 默认配置
+        id: setting
+        if: steps.download.outputs.status == 'success' && !cancelled()
+        run: |
+          sed -i 's|return 1; /\* not allowed \*/|return 0; /* not allowed */|' M1/m1_csrc/m1_sub_ghz.c
+          sed -i 's|^\([[:space:]]*\)ret = 1;|\1ret = 0;|' M1/m1_csrc/m1_sub_ghz.c
+          sed -i 's|{ 925000000UL, "925.000" },|&\n\t{ 430000000UL, "430.000" },|' M1/m1_csrc/m1_sub_ghz.c
+          sed -i 's|{ 925000000UL, "925.000" },|&\n\t{ 430500000UL, "430.500" },|' M1/m1_csrc/m1_sub_ghz.c
+          sed -i 's|{ 925000000UL, "925.000" },|&\n\t{ 431500000UL, "431.500" },|' M1/m1_csrc/m1_sub_ghz.c
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 编译固件
+        id: compile
+        if: steps.setting.outputs.status == 'success' && !cancelled()
+        run: |
+          cd M1/
+          git stash
+          ./build.sh --release
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 检查磁盘使用情况
+        if: steps.compile.outputs.status == 'success' && !cancelled()
+        run: df -hT
+
+      - name: 组织文件
+        id: organize
+        if: steps.compile.outputs.status == 'success' && !cancelled()
+        run: |
+          cd M1/
+          rm -rf *.tgz *.zip
+          mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
+          rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+          echo "status=success" >> $GITHUB_OUTPUT
+
+      - name: 上传固件目录
+        uses: actions/upload-artifact@main
+        if: steps.organize.outputs.status == 'success' && !cancelled()
+        with:
+          name: ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          path: ${{ env.FIRMWARE }}
+
+      - name: 上传Release
+        id: release
+        if: steps.organize.outputs.status == 'success' && !cancelled()
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.FILE_DATE }}_${{ env.GIT_NAME }}
+          allowUpdates: true
+          tag: ${{ env.FILE_DATE }}-${{ env.GIT_NAME }}
+          commit: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            #### ${{ env.GIT_NAME }} 固件更新：
+            - 源码仓库：[${{ env.REPO_URL }}](${{ env.GITHUB_URL }}/${{ env.REPO_URL }})
+            - 北京时间：${{ env.CODE_TIME8 }}
+            - UTC时间：${{ env.CODE_TIME }}
+          artifacts: ${{ env.FIRMWARE }}/*.bin
+
+      - name: 删除旧的releases和workflows runs
+        uses: ophub/delete-releases-workflows@main
+        if: steps.organize.outputs.status == 'success' && !cancelled()
+        with:
+          delete_releases: true
+          delete_tags: true
+          releases_keep_latest: 3000
+          delete_workflows: true
+          workflows_keep_day: 365
+          gh_token: ${{ secrets.GH_TOKEN }}
