@@ -62,7 +62,7 @@ jobs:
           sudo timedatectl set-timezone "Asia/Shanghai"
           sudo mkdir -p /workdir
           sudo chown $USER:$GROUPS /workdir
-          sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+          sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi cmake ninja-build srecord
           sudo apt install cmake ninja-build srecord
           #wget https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz
           #sudo tar xf arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi.tar.xz -C /opt/
@@ -88,7 +88,8 @@ jobs:
         id: setting
         if: steps.download.outputs.status == 'success' && !cancelled()
         run: |
-          sed -i 's|m1_csrc/res_string\.c|m1_csrc/Res_String.c|g' M1/cmake/m1_01/CMakeLists.txt
+          cp M1/m1_csrc/Res_String.c M1/m1_csrc/res_string.c
+          cp M1/m1_csrc/Res_String.h M1/m1_csrc/res_string.h
           sed -i 's|return 1; /\* not allowed \*/|return 0; /* not allowed */|' M1/m1_csrc/m1_sub_ghz.c
           sed -i 's|^\([[:space:]]*\)ret = 1;|\1ret = 0;|' M1/m1_csrc/m1_sub_ghz.c
           sed -i 's|{ 925000000UL, "925.000" },|&\n\t{ 430000000UL, "430.000" },|' M1/m1_csrc/m1_sub_ghz.c
