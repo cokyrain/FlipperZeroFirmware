@@ -113,12 +113,21 @@ jobs:
         id: organize
         if: steps.compile.outputs.status == 'success' && !cancelled()
         run: |
-          cd M1/
-          rm -rf *.tgz *.zip
-          mv f7-update-* "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          tar -czf "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}.tgz" "${{ env.FILE_NAME }}-${{ env.FILE_TIME }}"
-          rm -rf ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
+          cd M1/artifacts
+          TIMESTAMP="${{ env.FILE_TIME }}"
+          for f in *; do
+            [ -f "$f" ] || continue
+            base="${f%.*}"
+            ext="${f##*.}"
+            if [ "$base" = "$f" ]; then
+              # 无扩展名
+              mv "$f" "${f}_${TIMESTAMP}"
+            else
+              mv "$f" "${base}_${TIMESTAMP}.${ext}"
+            fi
+          done
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+          echo "ARTIFACTS_DIR=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
       - name: 上传固件目录
@@ -126,7 +135,7 @@ jobs:
         if: steps.organize.outputs.status == 'success' && !cancelled()
         with:
           name: ${{ env.FILE_NAME }}-${{ env.FILE_TIME }}
-          path: ${{ env.FIRMWARE }}
+          path: ${{ env.ARTIFACTS_DIR }}
 
       - name: 上传Release
         id: release
@@ -143,7 +152,7 @@ jobs:
             - 源码仓库：[${{ env.REPO_URL }}](${{ env.GITHUB_URL }}/${{ env.REPO_URL }})
             - 北京时间：${{ env.CODE_TIME8 }}
             - UTC时间：${{ env.CODE_TIME }}
-          artifacts: ${{ env.FIRMWARE }}/*.bin
+          artifacts: ${{ env.ARTIFACTS_DIR }}/*
 
       - name: 删除旧的releases和workflows runs
         uses: ophub/delete-releases-workflows@main
